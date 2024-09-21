@@ -3,11 +3,14 @@ package com.yael.springboot.api.gchat.gchat.domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 
 
-
+@Entity
+@Table(name = "preferences")
 public class PreferencesEntity extends BaseEntity {
 
     private int maxAge = 60;

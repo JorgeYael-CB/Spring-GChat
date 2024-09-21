@@ -1,9 +1,14 @@
 package com.yael.springboot.api.gchat.gchat.domain.entities;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 
 
+
+@Entity
+@Table(name = "messages")
 public class MessageEntity extends BaseEntity {
 
     private String content;

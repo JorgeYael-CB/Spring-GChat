@@ -3,13 +3,17 @@ package com.yael.springboot.api.gchat.gchat.domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 
 
-
+@Entity
+@Table(name = "users")
 public class UserEntity extends BaseEntity {
 
     private String name;
@@ -25,7 +29,7 @@ public class UserEntity extends BaseEntity {
     @ManyToOne
     private PhotoEntity profileImage;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<PhotoEntity> images = new ArrayList<>();
 
     @ManyToMany
@@ -40,7 +44,7 @@ public class UserEntity extends BaseEntity {
     @OneToMany
     private List<MessageEntity> messages = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<LikeEntity> likes = new ArrayList<>();
 
     @ManyToOne
