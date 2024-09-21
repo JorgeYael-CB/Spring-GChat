@@ -3,6 +3,8 @@ package com.yael.springboot.api.gchat.gchat.domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.ManyToMany;
+
 
 
 
@@ -12,8 +14,7 @@ public class PreferencesEntity extends BaseEntity {
     private int minAge = 18;
     private String country;
 
-
-    // ManyToMany
+    @ManyToMany
     private List<ActivityEntity> activities = new ArrayList<>();
 
 

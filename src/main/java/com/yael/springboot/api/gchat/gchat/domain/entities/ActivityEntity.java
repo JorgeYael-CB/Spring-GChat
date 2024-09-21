@@ -3,12 +3,14 @@ package com.yael.springboot.api.gchat.gchat.domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.ManyToMany;
+
 
 
 public class ActivityEntity extends BaseEntity {
     private String activity;
 
-    //ManyToMany
+    @ManyToMany
     private List<UserEntity> users = new ArrayList<>();
 
 

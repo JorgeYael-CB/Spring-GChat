@@ -1,6 +1,6 @@
 package com.yael.springboot.api.gchat.gchat.domain.entities;
 
-
+import jakarta.persistence.ManyToOne;
 
 
 
@@ -10,10 +10,10 @@ public class MessageEntity extends BaseEntity {
     private Boolean isEdited = false;
 
 
-    // ManyToOne
+    @ManyToOne
     private ServerEntity server;
 
-    // ManyToOne
+    @ManyToOne
     private UserEntity user;
 
 

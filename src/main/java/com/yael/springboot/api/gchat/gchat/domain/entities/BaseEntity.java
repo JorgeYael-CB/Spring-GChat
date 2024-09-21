@@ -2,10 +2,17 @@ package com.yael.springboot.api.gchat.gchat.domain.entities;
 
 import java.util.Date;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 
 
 
 public class BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private Date createAt = new Date();
     private Date updatedAt = new Date();

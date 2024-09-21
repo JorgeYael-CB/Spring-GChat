@@ -1,5 +1,7 @@
 package com.yael.springboot.api.gchat.gchat.domain.entities;
 
+import jakarta.persistence.ManyToOne;
+
 
 
 
@@ -7,10 +9,10 @@ public class LikeEntity extends BaseEntity {
 
     private int likes;
 
-    // ManyToOne
+    @ManyToOne
     private UserEntity user;
 
-    // ManyToOne
+    @ManyToOne
     private PhotoEntity photoEntity;
 
 

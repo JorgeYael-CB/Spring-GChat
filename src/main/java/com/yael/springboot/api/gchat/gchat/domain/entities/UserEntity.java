@@ -3,6 +3,10 @@ package com.yael.springboot.api.gchat.gchat.domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+
 
 
 
@@ -15,31 +19,31 @@ public class UserEntity extends BaseEntity {
     private int age = 18;
     private String country;
 
-    // ManyToMany
+    @ManyToMany
     private List<RoleEntity> roles;
 
-    // oneToOne (pendiente)
+    @ManyToOne
     private PhotoEntity profileImage;
 
-    // oneToMany
+    @OneToMany
     private List<PhotoEntity> images = new ArrayList<>();
 
-    // ManyToMany
+    @ManyToMany
     private List<ActivityEntity> activities = new ArrayList<>();
 
-    // ManyToMany
+    @ManyToMany
     private List<ServerEntity> servers = new ArrayList<>();
 
-    //oneToMany
+    @OneToMany
     private List<ServerEntity> serverOwners = new ArrayList<>();
 
-    // oneToMany
+    @OneToMany
     private List<MessageEntity> messages = new ArrayList<>();
 
-    // oneToMany
+    @OneToMany
     private List<LikeEntity> likes = new ArrayList<>();
 
-    // manyToPreferenceEntity
+    @ManyToOne
     private PreferencesEntity preferences;
 
 
