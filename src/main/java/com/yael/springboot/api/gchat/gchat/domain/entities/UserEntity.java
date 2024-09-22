@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
@@ -16,8 +17,12 @@ import jakarta.persistence.Table;
 @Table(name = "users")
 public class UserEntity extends BaseEntity {
 
+    @Column(unique=true)
     private String name;
+
+    @Column(unique=true)
     private String email;
+
     private String password;
     private String description;
     private int age = 18;
