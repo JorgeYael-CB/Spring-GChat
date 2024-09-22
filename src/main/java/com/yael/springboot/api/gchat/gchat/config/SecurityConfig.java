@@ -24,7 +24,7 @@ public class SecurityConfig {
         http
             .csrf().disable()
             .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/api/**").permitAll() // Permitir acceso a rutas públicas
+                .requestMatchers("/**").permitAll() // Permitir acceso a rutas públicas
                 .requestMatchers("/login", "/register").permitAll() // Desactivar seguridad en /login y /register
                 .anyRequest().authenticated() // Requiere autenticación para cualquier otra ruta
             );

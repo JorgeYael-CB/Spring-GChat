@@ -37,7 +37,7 @@ public class FileLocalServiceImpl implements IFilesService {
             throw CustomException.internalServerException("No se logro guardar la imagen");
         }
 
-        String fileUrl = "/static" + path + fileName;
+        String fileUrl = pathFile.toString();
         return fileUrl;
     }
 
