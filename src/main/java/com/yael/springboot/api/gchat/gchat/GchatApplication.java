@@ -17,8 +17,8 @@ public class GchatApplication implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/images/**")
-			.addResourceLocations("classpath:/static/**");
+		registry.addResourceHandler("/**")
+			.addResourceLocations("classpath:/static/");
 	}
 
 }

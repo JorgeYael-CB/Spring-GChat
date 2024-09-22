@@ -86,7 +86,7 @@ public class AuthService {
         PhotoEntity profileImage = null;
 
         if( registerUserDto.getProfileImage() != null ){
-            String fileUrl = fileService.saveImage(registerUserDto.getProfileImage(), "");
+            String fileUrl = fileService.saveImage(registerUserDto.getProfileImage(), "images/");
             profileImage = new PhotoEntity();
 
             profileImage.setImage(fileUrl);
