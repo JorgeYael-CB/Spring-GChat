@@ -10,5 +10,6 @@ import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 
 public interface IUserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmail( String email );
+    Optional<UserEntity> findByEmailOrName( String email, String name );
 }
 

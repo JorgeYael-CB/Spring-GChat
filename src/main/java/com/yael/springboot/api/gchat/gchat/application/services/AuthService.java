@@ -73,10 +73,10 @@ public class AuthService {
 
     @Transactional
     public ResponseService<UserDto> Register( RegisterUserDto registerUserDto ){
-        Optional<UserEntity> userDb = userRepository.findByEmail(registerUserDto.getEmail());
-        Optional<RoleEntity> userRole = rolesRepository.findByRole("USER");
-
+        Optional<UserEntity> userDb = userRepository.findByEmailOrName(registerUserDto.getEmail(), registerUserDto.getName());
         if( userDb.isPresent() ) throw CustomException.badRequestException("Account already exists");
+
+        Optional<RoleEntity> userRole = rolesRepository.findByRole("USER");
 
         UserEntity newUser = new UserEntity();
         newUser.setName(registerUserDto.getName());
