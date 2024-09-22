@@ -26,7 +26,7 @@ public class UserEntity extends BaseEntity {
     @ManyToMany
     private List<RoleEntity> roles;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     private PhotoEntity profileImage;
 
     @OneToMany(cascade=CascadeType.ALL)

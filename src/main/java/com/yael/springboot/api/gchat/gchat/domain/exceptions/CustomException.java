@@ -28,7 +28,10 @@ public class CustomException extends RuntimeException {
     }
 
     public static CustomException internalServerException( String error ){
-        return new CustomException(500, error);
+        // TODO: logger
+        System.out.println(error);
+
+        return new CustomException(500, "Internal server error, please try again later.");
     }
 
     public static CustomException unexpectedException( String error ){

@@ -1,7 +1,8 @@
 package com.yael.springboot.api.gchat.gchat.application.dtos.auth;
 
-import java.io.File;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -17,7 +18,7 @@ public class RegisterUserDto extends LoginUserDto {
     @NotBlank
     @Size(min = 4, max = 70)
     private String name;
-    private File profileImage;
+    private MultipartFile profileImage;
 
     @Size(min=5, max=700)
     private String description;
@@ -33,11 +34,11 @@ public class RegisterUserDto extends LoginUserDto {
 
 
 
-    public File getProfileImage() {
+    public MultipartFile getProfileImage() {
         return profileImage;
     }
 
-    public void setProfileImage(File profileImage) {
+    public void setProfileImage(MultipartFile profileImage) {
         this.profileImage = profileImage;
     }
 

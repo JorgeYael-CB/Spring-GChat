@@ -1,4 +1,4 @@
-package com.yael.springboot.api.gchat.gchat;
+package com.yael.springboot.api.gchat.gchat.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;

@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.LoginUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.RegisterUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IFilesService;
 import com.yael.springboot.api.gchat.gchat.application.mappers.UserMapper;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ActivityEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
@@ -41,6 +43,13 @@ public class AuthService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    IFilesService fileService;
+
+
     @Transactional(readOnly=true)
     public ResponseService<UserDto> Login( LoginUserDto loginUserDto ){
         //Validar que el usuario existe
@@ -51,9 +60,8 @@ public class AuthService {
 
         if( !user.getIsActive() ) throw CustomException.unaothorizedException("the account has been deactivated.");
 
-
-        //TODO: Verificar password mediante bcrypt
-
+        Boolean isPasswordValid = passwordEncoder.matches(loginUserDto.getPassword(), user.getPassword());
+        if( !isPasswordValid ) throw CustomException.badRequestException("credentials are not correct");
 
         ResponseService<UserDto> response = new ResponseService<>();
         response.setData(userMapper.userEntityToUserDto(user));
@@ -78,8 +86,7 @@ public class AuthService {
         PhotoEntity profileImage = null;
 
         if( registerUserDto.getProfileImage() != null ){
-            //TODO: hacer guardado de la imagen
-            String fileUrl = "https://....";
+            String fileUrl = fileService.saveImage(registerUserDto.getProfileImage(), "images");
             profileImage = new PhotoEntity();
 
             profileImage.setImage(fileUrl);
@@ -93,12 +100,11 @@ public class AuthService {
             });
         }
 
-        //TODO: guardar la password en bcrypt
-        String passwordBcrypt = "passwordhash";
-
         if( profileImage != null ){
             newUser.setProfileImage(profileImage);
         }
+
+        String passwordBcrypt = passwordEncoder.encode(registerUserDto.getPassword());
 
         newUser.setAge(registerUserDto.getAge());
         newUser.setDescription(registerUserDto.getDescription());
