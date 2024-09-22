@@ -1,6 +1,7 @@
 package com.yael.springboot.api.gchat.gchat.application.services;
 
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,9 +15,11 @@ import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
 import com.yael.springboot.api.gchat.gchat.application.mappers.UserMapper;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ActivityEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
+import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 import com.yael.springboot.api.gchat.gchat.domain.exceptions.CustomException;
 import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.IActivityRepository;
+import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.IRolesRepository;
 import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.IUserRepository;
 
 
@@ -31,6 +34,9 @@ public class AuthService {
 
     @Autowired
     IActivityRepository activityRepository;
+
+    @Autowired
+    IRolesRepository rolesRepository;
 
     @Autowired
     UserMapper userMapper;
@@ -60,6 +66,7 @@ public class AuthService {
     @Transactional
     public ResponseService<UserDto> Register( RegisterUserDto registerUserDto ){
         Optional<UserEntity> userDb = userRepository.findByEmail(registerUserDto.getEmail());
+        Optional<RoleEntity> userRole = rolesRepository.findByRole("USER");
 
         if( userDb.isPresent() ) throw CustomException.badRequestException("Account already exists");
 
@@ -68,11 +75,12 @@ public class AuthService {
         newUser.setEmail(registerUserDto.getEmail());
         newUser.setPassword(registerUserDto.getPassword());
 
-        PhotoEntity profileImage = new PhotoEntity();
+        PhotoEntity profileImage = null;
 
         if( registerUserDto.getProfileImage() != null ){
             //TODO: hacer guardado de la imagen
             String fileUrl = "https://....";
+            profileImage = new PhotoEntity();
 
             profileImage.setImage(fileUrl);
         }
@@ -88,11 +96,18 @@ public class AuthService {
         //TODO: guardar la password en bcrypt
         String passwordBcrypt = "passwordhash";
 
-        newUser.setProfileImage(profileImage);
+        if( profileImage != null ){
+            newUser.setProfileImage(profileImage);
+        }
+
         newUser.setAge(registerUserDto.getAge());
         newUser.setDescription(registerUserDto.getDescription());
         newUser.setCountry(registerUserDto.getCountry());
         newUser.setPassword(passwordBcrypt);
+
+        if( userRole.isPresent() ){
+            newUser.setRoles( Arrays.asList(userRole.get()) );
+        }
 
         String token = "JWT";
 
