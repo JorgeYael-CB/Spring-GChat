@@ -25,7 +25,7 @@ public class UserEntity extends BaseEntity {
 
     private String password;
     private String description;
-    private int age = 18;
+    private Integer age = 18;
     private String country;
 
     @ManyToMany
