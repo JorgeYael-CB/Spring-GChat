@@ -45,7 +45,7 @@ public class AuthController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @PostMapping("/update-user/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<ResponseService<UserDto>> updateUser( @PathVariable Long id, @Valid @ModelAttribute UpdateUserDto entity) {
         entity.setUserId(id);
         ResponseService<UserDto> response = authService.updateUser(entity);
