@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,6 +27,9 @@ public class FileLocalServiceImpl implements IFilesService {
 
     @Autowired
     HttpServletRequest request;
+    @Autowired
+    ResourceLoader resourceLoader;
+
 
     @Override
     public String saveImage(MultipartFile image, String path) {
@@ -33,9 +37,8 @@ public class FileLocalServiceImpl implements IFilesService {
             String originalFilename = image.getOriginalFilename();
             if( originalFilename == null ) throw CustomException.badRequestException("File required extension valid.");
 
-            Path directory = Paths.get(STATIC_FILES + path);
-
-            if( Files.notExists(directory) ) Files.createDirectories(directory);
+            // Si no existe lo creamos
+            this.getPath(path);
 
             String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
             String fileName = UUID.randomUUID().toString() + extension;
@@ -50,17 +53,36 @@ public class FileLocalServiceImpl implements IFilesService {
                 .toUriString();
             String fileUrl = pathFile.toString().substring( (pathFile.toString().lastIndexOf('\\') + 1) );
 
-            var url = baseUrl + "/" + fileUrl;
+            var url = baseUrl + "/" + path + fileUrl;
             return url;
         } catch (IOException e) {
-            throw CustomException.internalServerException("No se logro guardar la imagen");
+            throw CustomException.internalServerException("No se logro guardar la imagen: " + e.getMessage());
         }
     }
 
     @Override
     public Boolean deleteImage(String url, String path) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteImage'");
+        try {
+            Path directory = this.getPath(path);
+            String fileUrl = url.replace('\\', '/').substring( url.lastIndexOf('/') );
+
+            var resource = resourceLoader.getResource("classpath:static/" + path + fileUrl);
+
+            if( resource.exists() && resource.getFile().isFile() ){
+                Files.delete( Paths.get(directory + fileUrl) );
+            }
+
+            return true;
+        } catch (Exception e) {
+            throw CustomException.internalServerException("No se pudo eliminar la imagen: " + e.getMessage());
+        }
+    }
+
+
+    private Path getPath( String path ) throws IOException{
+        Path directory = Paths.get(STATIC_FILES + path);
+        if( Files.notExists(directory) ) Files.createDirectories(directory);
+        return directory;
     }
 
 }
