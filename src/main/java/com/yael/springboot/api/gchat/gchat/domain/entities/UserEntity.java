@@ -43,8 +43,6 @@ public class UserEntity extends BaseEntity {
     @ManyToMany
     private List<ServerEntity> servers = new ArrayList<>();
 
-    @OneToMany
-    private List<ServerEntity> serverOwners = new ArrayList<>();
 
     @OneToMany
     private List<MessageEntity> messages = new ArrayList<>();
@@ -144,13 +142,6 @@ public class UserEntity extends BaseEntity {
         this.servers = servers;
     }
 
-    public List<ServerEntity> getServerOwners() {
-        return serverOwners;
-    }
-
-    public void setServerOwners(List<ServerEntity> serverOwners) {
-        this.serverOwners = serverOwners;
-    }
 
     public List<MessageEntity> getMessages() {
         return messages;

@@ -24,7 +24,7 @@ import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 import com.yael.springboot.api.gchat.gchat.domain.exceptions.CustomException;
 import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.IRolesRepository;
-import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.IUserRepository;
+import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.UserRepository;
 
 
 
@@ -34,7 +34,7 @@ import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.IUserRepo
 public class AuthService {
 
     @Autowired
-    IUserRepository userRepository;
+    UserRepository userRepository;
     @Autowired
     IRolesRepository rolesRepository;
     @Autowired

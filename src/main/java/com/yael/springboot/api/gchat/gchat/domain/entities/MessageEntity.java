@@ -12,7 +12,8 @@ import jakarta.persistence.Table;
 public class MessageEntity extends BaseEntity {
 
     private String content;
-    private Boolean isEdited = false;
+    private Boolean edited = false;
+    private Boolean serverMessage = false;
 
 
     @ManyToOne
@@ -41,11 +42,11 @@ public class MessageEntity extends BaseEntity {
     }
 
     public Boolean getIsEdited() {
-        return isEdited;
+        return edited;
     }
 
-    public void setIsEdited(Boolean isEdited) {
-        this.isEdited = isEdited;
+    public void setIsEdited(Boolean edited) {
+        this.edited = edited;
     }
 
     public ServerEntity getServer() {
@@ -62,6 +63,14 @@ public class MessageEntity extends BaseEntity {
 
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    public Boolean getIsServerMessage() {
+        return serverMessage;
+    }
+
+    public void setIsServerMessage(Boolean serverMessage) {
+        this.serverMessage = serverMessage;
     }
 
 }

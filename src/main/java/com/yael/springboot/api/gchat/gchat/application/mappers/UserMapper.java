@@ -23,7 +23,6 @@ public class UserMapper {
         userDto.setPreferences(user.getPreferences());
         userDto.setProfileImage(user.getProfileImage());
         userDto.setRoles(user.getRoles());
-        userDto.setServerOwners(user.getServerOwners());
         userDto.setServers(user.getServers());
 
         return userDto;
