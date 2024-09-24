@@ -32,7 +32,9 @@ public class ServerMapper {
         serverEntity.getUsers()
             .stream()
             .forEach( u -> {
-                users.add(userMapper.userEntityToUserDto(u));
+                UserDto user = userMapper.userEntityToUserDto(u);
+                user.setServers(new ArrayList<>());
+                users.add(user);
             });
 
         server.setUsers( users );

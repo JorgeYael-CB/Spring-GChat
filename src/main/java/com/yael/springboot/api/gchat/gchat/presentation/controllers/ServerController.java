@@ -38,10 +38,15 @@ public class ServerController {
         return null;
     }
 
-    @GetMapping("join/{id}/{userId}")
+    @GetMapping("/join/{id}/{userId}")
     public ResponseEntity<?> joinById( @PathVariable Long id, @PathVariable Long userId ){
         ResponseService<ServerDto> response = serverService.joinById(id, userId);
         return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getServer( @PathVariable Long id ){
+        return null;
     }
 
 }

@@ -1,14 +1,22 @@
 package com.yael.springboot.api.gchat.gchat.application.mappers;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
+import com.yael.springboot.api.gchat.gchat.application.dtos.server.ServerDto;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 
 
 @Component
 public class UserMapper {
+
+    @Autowired
+    ServerMapper serverMapper;
 
     public UserDto userEntityToUserDto( UserEntity user ){
         UserDto userDto = new UserDto();
@@ -23,7 +31,13 @@ public class UserMapper {
         userDto.setPreferences(user.getPreferences());
         userDto.setProfileImage(user.getProfileImage());
         userDto.setRoles(user.getRoles());
-        userDto.setServers(user.getServers());
+
+        List<ServerDto> servers = new ArrayList<>();
+
+        user.getServers()
+            .stream().map( s -> servers.add(serverMapper.serverEntityToServerDto(s)));
+
+        userDto.setServers(servers);
 
         return userDto;
     }

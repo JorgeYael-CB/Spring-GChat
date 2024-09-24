@@ -2,11 +2,11 @@ package com.yael.springboot.api.gchat.gchat.application.dtos.auth;
 
 import java.util.List;
 
+import com.yael.springboot.api.gchat.gchat.application.dtos.server.ServerDto;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ActivityEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.PreferencesEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
-import com.yael.springboot.api.gchat.gchat.domain.entities.ServerEntity;
 
 
 public class UserDto {
@@ -19,8 +19,8 @@ public class UserDto {
     private PhotoEntity profileImage;
     private List<PhotoEntity> images;
     private List<ActivityEntity> activities;
-    private List<ServerEntity> servers;
-    private List<ServerEntity> serverOwners;
+    private List<ServerDto> servers;
+    private List<ServerDto> serverOwners;
     private PreferencesEntity preferences;
 
 
@@ -78,16 +78,16 @@ public class UserDto {
     public void setActivities(List<ActivityEntity> activities) {
         this.activities = activities;
     }
-    public List<ServerEntity> getServers() {
+    public List<ServerDto> getServers() {
         return servers;
     }
-    public void setServers(List<ServerEntity> servers) {
+    public void setServers(List<ServerDto> servers) {
         this.servers = servers;
     }
-    public List<ServerEntity> getServerOwners() {
+    public List<ServerDto> getServerOwners() {
         return serverOwners;
     }
-    public void setServerOwners(List<ServerEntity> serverOwners) {
+    public void setServerOwners(List<ServerDto> serverOwners) {
         this.serverOwners = serverOwners;
     }
     public PreferencesEntity getPreferences() {
