@@ -1,8 +1,10 @@
 package com.yael.springboot.api.gchat.gchat.presentation.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +43,17 @@ public class AuthController {
         ResponseService<UserDto> response = authService.updateUser(entity);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
+
+    @GetMapping("/get-user")
+    public ResponseEntity<ResponseService<UserDto>> postMethodName(
+        @Param("email") String email,
+        @Param("id") Long id
+    ) {
+
+        ResponseService<UserDto> response = authService.getUser(id, email);
+        return ResponseEntity.status(200).body(response);
+    }
+
 
 
 }

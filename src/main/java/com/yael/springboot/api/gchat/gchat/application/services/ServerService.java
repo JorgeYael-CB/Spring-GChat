@@ -41,6 +41,9 @@ public class ServerService {
         ServerEntity serverDb = server.get();
         UserEntity userDB = user.get();
 
+        Boolean exists = serverDb.getUsers().stream().anyMatch( u -> u.getId().equals(userDB.getId()));
+        if( exists ) throw CustomException.badRequestException("the user has already joined this server.");
+
         serverDb.getUsers().add(userDB);
         userDB.getServers().add(serverDb);
 
@@ -49,13 +52,10 @@ public class ServerService {
 
         //TODO: notificar a todos los usuarios mediante websockets que alguien se conecto al servidior y emitir un mensaje
 
-        String token = "JWT";
-
         ResponseService<ServerDto> response = new ResponseService<>();
         response.setData(serverMapper.serverEntityToServerDto(serverDb));
         response.setStatus(200);
         response.setDate(new Date());
-        response.setToken(token);
 
         return response;
     }

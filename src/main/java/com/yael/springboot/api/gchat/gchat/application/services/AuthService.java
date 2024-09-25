@@ -4,6 +4,7 @@ package com.yael.springboot.api.gchat.gchat.application.services;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -143,8 +144,26 @@ public class AuthService {
     }
 
 
+    @Transactional(readOnly=true)
+    public ResponseService<UserDto> getUser( Long id, String email ){
+        Optional<UserEntity> user = userRepository.findByEmailOrId(email, id);
+        if( !user.isPresent() ) throw CustomException.notFoundException("User not exist");
+
+        UserEntity userDb = user.get();
+
+        ResponseService<UserDto> response = new ResponseService<>();
+        response.setData(userMapper.userEntityToUserDto(userDb));
+        response.setStatus(200);
+        response.setDate(new Date());
+
+        return response;
+    }
+
+
     public ResponseService<UserDto> getUserByToken(){
         return null;
     }
+
+
 
 }
