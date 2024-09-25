@@ -71,8 +71,8 @@ public class AuthService {
 
 
     @Transactional
-    public ResponseService<UserDto> updateUser( UpdateUserDto user ){
-        Optional<UserEntity> userOptional = userRepository.findByEmail(user.getEmail());
+    public ResponseService<UserDto> updateUser( UpdateUserDto user, String email ){
+        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
         if( !userOptional.isPresent() ) throw CustomException.notFoundException("User not exists");
 
         UserEntity userDb = userOptional.get();

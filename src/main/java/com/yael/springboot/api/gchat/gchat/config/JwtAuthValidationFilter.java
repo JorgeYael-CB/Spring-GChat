@@ -59,7 +59,7 @@ public class JwtAuthValidationFilter extends BasicAuthenticationFilter {
                 .parseSignedClaims(token)
                 .getPayload();
 
-            String username = (String)claims.get("username");
+            String username = (String)claims.getSubject();
             Object authorities = claims.get("authorities");
 
             Collection<? extends GrantedAuthority> roles = Arrays.asList(
@@ -75,7 +75,7 @@ public class JwtAuthValidationFilter extends BasicAuthenticationFilter {
             );
 
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                authorities,
+                username,
                 null,
                 roles
             );
@@ -83,6 +83,7 @@ public class JwtAuthValidationFilter extends BasicAuthenticationFilter {
             SecurityContextHolder
                 .getContext()
                 .setAuthentication(auth);
+
             chain.doFilter(request, response);
         }catch(Exception ex){
             Map<String, Object> body = new HashMap<>();
