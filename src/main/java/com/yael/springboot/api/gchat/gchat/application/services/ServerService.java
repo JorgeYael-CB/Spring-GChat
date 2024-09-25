@@ -14,6 +14,7 @@ import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 import com.yael.springboot.api.gchat.gchat.domain.exceptions.CustomException;
 import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.ServerRepository;
 import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.UserRepository;
+import com.yael.springboot.api.gchat.gchat.infrastructure.services.GetUserByAuth;
 
 
 
@@ -27,12 +28,14 @@ public class ServerService {
     ServerRepository serverRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    GetUserByAuth getUserByAuth;
 
 
-    public ResponseService<ServerDto> joinById( Long serverId, Long userId ){
+    public ResponseService<ServerDto> joinById( Long serverId ){
         Optional<ServerEntity> server = serverRepository.findById(serverId);
         if( !server.isPresent() ) throw CustomException.notFoundException("Server not found.");
-        Optional<UserEntity> user = userRepository.findById(userId);
+        Optional<UserEntity> user = userRepository.findByEmail(this.getUserByAuth.getUsernameLogged());
         if( !user.isPresent() ) throw CustomException.notFoundException("Oops! try again later.");
 
         ServerEntity serverDb = server.get();
@@ -65,9 +68,9 @@ public class ServerService {
 
 
     @Transactional
-    public ResponseService<ServerDto> create( Long userId ){
+    public ResponseService<ServerDto> create(){
         //TODO: solo podran crear los admins o los que tienen el role de pago.
-        Optional<UserEntity> user = userRepository.findById(userId);
+        Optional<UserEntity> user = userRepository.findByEmail(this.getUserByAuth.getUsernameLogged());
         if( !user.isPresent() ) throw CustomException.notFoundException("Oops! try again later.");
 
         UserEntity userDb = user.get();

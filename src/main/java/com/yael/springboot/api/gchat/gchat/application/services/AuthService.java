@@ -24,6 +24,7 @@ import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 import com.yael.springboot.api.gchat.gchat.domain.exceptions.CustomException;
 import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.IRolesRepository;
 import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.UserRepository;
+import com.yael.springboot.api.gchat.gchat.infrastructure.services.GetUserByAuth;
 
 
 
@@ -42,6 +43,8 @@ public class AuthService {
     PasswordEncoder passwordEncoder;
     @Autowired
     IFilesService filesService;
+    @Autowired
+    GetUserByAuth getUserByAuth;
 
 
     @Transactional
@@ -71,7 +74,7 @@ public class AuthService {
 
 
     @Transactional
-    public ResponseService<UserDto> updateUser( UpdateUserDto user, String email ){
+    public ResponseService<UserDto> updateUser( UpdateUserDto user ){
         // Validamos que tenga al menos un campo
         Method[] methods = UpdateUserDto.class.getDeclaredMethods();
         Boolean isAllMethodsEmpty = true;
@@ -93,7 +96,7 @@ public class AuthService {
             throw CustomException.badRequestException("Missing fields to updated");
         }
 
-        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+        Optional<UserEntity> userOptional = userRepository.findByEmail(getUserByAuth.getUsernameLogged());
         if( !userOptional.isPresent() ) throw CustomException.notFoundException("User not exists");
 
         UserEntity userDb = userOptional.get();

@@ -22,9 +22,9 @@ public class ServerController {
     @Autowired
     ServerService serverService;
 
-    @PostMapping("create/{id}")
-    public ResponseEntity<?> create( @PathVariable Long id ){
-        ResponseService<ServerDto> response = serverService.create(id);
+    @PostMapping("/create")
+    public ResponseEntity<?> create(){
+        ResponseService<ServerDto> response = serverService.create();
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
@@ -38,9 +38,9 @@ public class ServerController {
         return null;
     }
 
-    @GetMapping("/join/{id}/{userId}")
-    public ResponseEntity<?> joinById( @PathVariable Long id, @PathVariable Long userId ){
-        ResponseService<ServerDto> response = serverService.joinById(id, userId);
+    @GetMapping("/join/{id}")
+    public ResponseEntity<?> joinById( @PathVariable Long id ){
+        ResponseService<ServerDto> response = serverService.joinById(id);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
