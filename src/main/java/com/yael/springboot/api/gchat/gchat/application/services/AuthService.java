@@ -1,9 +1,9 @@
 package com.yael.springboot.api.gchat.gchat.application.services;
 
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -72,15 +72,34 @@ public class AuthService {
 
     @Transactional
     public ResponseService<UserDto> updateUser( UpdateUserDto user, String email ){
+        // Validamos que tenga al menos un campo
+        Method[] methods = UpdateUserDto.class.getDeclaredMethods();
+        Boolean isAllMethodsEmpty = true;
+
+        for (Method meth : methods) {
+            if( meth.getName().startsWith("get") ){
+
+                try {
+                    Object value = meth.invoke(user);
+                    if( value != null ){
+                        isAllMethodsEmpty = false;
+                        break;
+                    }
+                } catch (Exception e) {}
+            }
+        }
+
+        if( isAllMethodsEmpty ){
+            throw CustomException.badRequestException("Missing fields to updated");
+        }
+
         Optional<UserEntity> userOptional = userRepository.findByEmail(email);
         if( !userOptional.isPresent() ) throw CustomException.notFoundException("User not exists");
 
         UserEntity userDb = userOptional.get();
         if (user.getAge() != null) userDb.setAge(user.getAge());
         if (user.getCountry() != null) userDb.setCountry(user.getCountry());
-        userDb.setUpdatedAt(new Date());
         if (user.getDescription() != null) userDb.setDescription(user.getDescription());
-        if (user.getEmail() != null) userDb.setEmail(user.getEmail());
         if (user.getName() != null) userDb.setName(user.getName());
 
         if( user.getImages() != null && !user.getImages().isEmpty() ){

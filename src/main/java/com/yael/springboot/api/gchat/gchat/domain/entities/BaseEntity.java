@@ -2,6 +2,9 @@ package com.yael.springboot.api.gchat.gchat.domain.entities;
 
 import java.util.Date;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,8 +19,10 @@ public class BaseEntity {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    private Date createAt = new Date();
-    private Date updatedAt = new Date();
+    @CreationTimestamp
+    private Date createAt;
+    @UpdateTimestamp
+    private Date updatedAt;
     private Boolean isActive = true;
 
 

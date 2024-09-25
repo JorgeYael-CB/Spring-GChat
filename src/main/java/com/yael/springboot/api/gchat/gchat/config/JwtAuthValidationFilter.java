@@ -87,6 +87,8 @@ public class JwtAuthValidationFilter extends BasicAuthenticationFilter {
             chain.doFilter(request, response);
         }catch(Exception ex){
             Map<String, Object> body = new HashMap<>();
+            System.out.println(ex.getMessage());
+
             body.put("err", "Session expired");
             body.put("date", new Date());
             body.put("status", 401);

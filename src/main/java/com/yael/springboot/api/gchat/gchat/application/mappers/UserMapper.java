@@ -17,7 +17,6 @@ public class UserMapper {
         userDto.setAge(user.getAge());
         userDto.setCountry(user.getCountry());
         userDto.setDescription(user.getDescription());
-        userDto.setEmail(user.getEmail());
         userDto.setImages(user.getImages());
         userDto.setName(user.getName());
         userDto.setPreferences(user.getPreferences());
@@ -26,6 +25,10 @@ public class UserMapper {
         userDto.setIsActive(user.getIsActive());
         userDto.setCreateAt(user.getCreateAt());
         userDto.setUpdatedAt(user.getUpdatedAt());
+
+        if( user.getEmail() != null ){
+            userDto.setEmail(user.getEmail());
+        }
 
         return userDto;
     }

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
@@ -18,12 +17,6 @@ public class UpdateUserDto {
 
     @Size(min = 4, max = 70)
     private String name;
-
-    @Email
-    private String email;
-
-    @Size(min=4, max=70)
-    private String password;
 
     private MultipartFile profileImage;
     private List<MultipartFile> images;
@@ -57,22 +50,6 @@ public class UpdateUserDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public MultipartFile getProfileImage() {
@@ -129,8 +106,6 @@ public class UpdateUserDto {
         sb.append("UpdateUserDto{");
         sb.append("userId=").append(userId);
         sb.append(", name=").append(name);
-        sb.append(", email=").append(email);
-        sb.append(", password=").append(password);
         sb.append(", profileImage=").append(profileImage);
         sb.append(", images=").append(images);
         sb.append(", description=").append(description);
