@@ -3,13 +3,18 @@ package com.yael.springboot.api.gchat.gchat.domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 
 
@@ -28,8 +33,16 @@ public class UserEntity extends BaseEntity {
     private Integer age = 18;
     private String country;
 
+
+    @JsonIgnoreProperties({"users", "handler", "hibernateLazyInitializer"})
     @ManyToMany
-    private List<RoleEntity> roles;
+    @JoinTable(
+        name="user_roles", // tabla intermedia
+        joinColumns = @JoinColumn(name="user_id"),
+        inverseJoinColumns = @JoinColumn(name="role_id"),
+        uniqueConstraints= { @UniqueConstraint(columnNames={"user_id", "role_id"}) }
+    )
+    private List<RoleEntity> roles = new ArrayList<>();
 
     @ManyToOne(cascade=CascadeType.ALL)
     private PhotoEntity profileImage;

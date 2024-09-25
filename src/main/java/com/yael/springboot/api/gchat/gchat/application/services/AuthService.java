@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yael.springboot.api.gchat.gchat.application.dtos.auth.LoginUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.RegisterUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UpdateUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
@@ -45,31 +44,9 @@ public class AuthService {
     IFilesService filesService;
 
 
-    @Transactional(readOnly=true)
-    public ResponseService<UserDto> Login( LoginUserDto loginUserDto ){
-        //Validar que el usuario existe
-        Optional<UserEntity> userDb = userRepository.findByEmail( loginUserDto.getEmail() );
-        if( !userDb.isPresent() ) throw CustomException.notFoundException("User not exists");
-
-        UserEntity user = userDb.get();
-
-        if( !user.getIsActive() ) throw CustomException.unaothorizedException("the account has been deactivated.");
-
-        Boolean isPasswordValid = passwordEncoder.matches(loginUserDto.getPassword(), user.getPassword());
-        if( !isPasswordValid ) throw CustomException.badRequestException("credentials are not correct");
-
-        ResponseService<UserDto> response = new ResponseService<>();
-        response.setData(userMapper.userEntityToUserDto(user));
-        response.setStatus(200);
-        response.setToken("JWT");
-
-        return response;
-    }
-
-
     @Transactional
     public ResponseService<UserDto> Register( RegisterUserDto registerUserDto ){
-        Optional<RoleEntity> userRole = rolesRepository.findByRole("USER");
+        Optional<RoleEntity> userRole = rolesRepository.findByRole("ROLE_USER");
         String passwordBcrypt = passwordEncoder.encode(registerUserDto.getPassword());
 
         UserEntity newUser = new UserEntity();

@@ -1,5 +1,6 @@
 package com.yael.springboot.api.gchat.gchat.application.dtos.auth;
 
+import java.util.Date;
 import java.util.List;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.server.ServerDto;
@@ -22,6 +23,11 @@ public class UserDto {
     private List<ServerDto> servers;
     private List<ServerDto> serverOwners;
     private PreferencesEntity preferences;
+
+    //BASE
+    private Boolean isActive;
+    private Date createAt;
+    private Date updatedAt;
 
 
     public String getName() {
@@ -95,6 +101,30 @@ public class UserDto {
     }
     public void setPreferences(PreferencesEntity preferences) {
         this.preferences = preferences;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 }

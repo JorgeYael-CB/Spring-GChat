@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yael.springboot.api.gchat.gchat.application.dtos.auth.LoginUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.RegisterUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UpdateUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
@@ -30,13 +29,6 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-
-    @PostMapping("/login")
-    public ResponseEntity<ResponseService<UserDto>> login( @Valid @RequestBody LoginUserDto loginUserDto ){
-        ResponseService<UserDto> response = authService.Login(loginUserDto);
-
-        return ResponseEntity.status(response.getStatus()).body(response);
-    }
 
     @PostMapping("/register")
     public ResponseEntity<ResponseService<UserDto>> register( @Valid @RequestBody RegisterUserDto registerUserDto ){
