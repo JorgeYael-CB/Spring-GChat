@@ -13,9 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.yael.springboot.api.gchat.gchat.application.mappers.UserMapper;
-import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.UserRepository;
-
 
 
 @Configuration
@@ -24,13 +21,6 @@ public class SecurityConfig {
 
     @Autowired
     AuthenticationConfiguration authenticationConfiguration;
-
-    @Autowired
-    private UserRepository userRepository; // Inyectar el repositorio aquí
-
-    @Autowired
-    private UserMapper userMapper; // Inyectar el mapper aquí
-
 
     @Bean
     AuthenticationManager authenticationManager() throws Exception {
@@ -48,11 +38,12 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
             .authorizeHttpRequests( authz -> authz
+                .requestMatchers(HttpMethod.GET, "/images/**").permitAll() // ruta permitda
                 .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll() // ruta permitda
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll() // ruta permitida
                 .anyRequest().authenticated() // rutas bloqueadas
             )
-            .addFilter( new JwtAuthToken(authenticationManager(), userRepository, userMapper) ) // primer filtro (validar datos del usuario)
+            .addFilter( new JwtAuthToken(authenticationManager()) ) // primer filtro (validar datos del usuario)
             .addFilter( new JwtAuthValidationFilter(authenticationManager()) ) // segundo filtro (en caso de que expire la sesion)
             .csrf( config -> config.disable()) // solo sirve para el HTML del servidor
             .sessionManagement( managment -> managment

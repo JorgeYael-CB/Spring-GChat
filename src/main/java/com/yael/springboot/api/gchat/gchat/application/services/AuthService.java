@@ -72,7 +72,7 @@ public class AuthService {
 
     @Transactional
     public ResponseService<UserDto> updateUser( UpdateUserDto user ){
-        Optional<UserEntity> userOptional = userRepository.findById(user.getUserId());
+        Optional<UserEntity> userOptional = userRepository.findByEmail(user.getEmail());
         if( !userOptional.isPresent() ) throw CustomException.notFoundException("User not exists");
 
         UserEntity userDb = userOptional.get();
@@ -121,7 +121,7 @@ public class AuthService {
     }
 
 
-    public ResponseService<UserDto> refreshToken(){
+    public ResponseService<UserDto> getUserByToken(){
         return null;
     }
 

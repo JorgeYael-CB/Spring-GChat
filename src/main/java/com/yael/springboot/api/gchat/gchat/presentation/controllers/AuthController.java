@@ -2,9 +2,10 @@ package com.yael.springboot.api.gchat.gchat.presentation.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,9 +38,18 @@ public class AuthController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @PostMapping("/update/{id}")
-    public ResponseEntity<ResponseService<UserDto>> updateUser( @PathVariable Long id, @Valid @ModelAttribute UpdateUserDto entity) {
-        entity.setUserId(id);
+    @PostMapping("/update")
+    public ResponseEntity<ResponseService<UserDto>> updateUser( @Valid @ModelAttribute UpdateUserDto entity) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails)principal).getUsername();
+            System.out.println(username);
+        } else {
+            String username = principal.toString();
+            System.out.println(username);
+        }
+
         ResponseService<UserDto> response = authService.updateUser(entity);
         return ResponseEntity.status(response.getStatus()).body(response);
     }

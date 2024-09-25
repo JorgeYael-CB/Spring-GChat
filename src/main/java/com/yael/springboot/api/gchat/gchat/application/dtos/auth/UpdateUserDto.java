@@ -123,4 +123,22 @@ public class UpdateUserDto {
         this.activities = activities;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("UpdateUserDto{");
+        sb.append("userId=").append(userId);
+        sb.append(", name=").append(name);
+        sb.append(", email=").append(email);
+        sb.append(", password=").append(password);
+        sb.append(", profileImage=").append(profileImage);
+        sb.append(", images=").append(images);
+        sb.append(", description=").append(description);
+        sb.append(", age=").append(age);
+        sb.append(", country=").append(country);
+        sb.append(", activities=").append(activities);
+        sb.append('}');
+        return sb.toString();
+    }
+
 }
