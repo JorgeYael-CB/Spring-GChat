@@ -18,11 +18,9 @@ public class MessageEntity extends BaseEntity {
     private Boolean serverMessage = false;
 
     @ManyToOne
-    @Column(nullable=false)
     private ServerEntity server;
 
     @ManyToOne
-    @Column(nullable=true)
     private UserEntity user;
 
 

@@ -27,6 +27,7 @@ public class UserMapper {
         userDto.setIsActive(user.getIsActive());
         userDto.setCreateAt(user.getCreateAt());
         userDto.setUpdatedAt(user.getUpdatedAt());
+        userDto.setId(user.getId());
 
         userDto.setServers(
             user.getServers().stream()

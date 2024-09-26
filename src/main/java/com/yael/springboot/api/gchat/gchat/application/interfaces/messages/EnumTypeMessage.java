@@ -3,7 +3,7 @@ package com.yael.springboot.api.gchat.gchat.application.interfaces.messages;
 
 
 
-public enum EnumTypesMessages {
+public enum EnumTypeMessage {
     UPDATE_MESSAGE ("update-message"),
     USER_JOINED_SERVER ("user-joined"),
     USER_LEAVE_SERVER ("user-leave"),
@@ -12,7 +12,7 @@ public enum EnumTypesMessages {
 
     private String type;
 
-    private EnumTypesMessages(String type){
+    private EnumTypeMessage(String type){
         this.type = type;
     }
 

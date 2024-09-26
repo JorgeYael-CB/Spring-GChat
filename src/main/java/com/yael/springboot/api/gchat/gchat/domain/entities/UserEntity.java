@@ -56,10 +56,6 @@ public class UserEntity extends BaseEntity {
     @ManyToMany
     private List<ServerEntity> servers = new ArrayList<>();
 
-
-    @OneToMany
-    private List<MessageEntity> messages = new ArrayList<>();
-
     @OneToMany(cascade=CascadeType.ALL)
     private List<LikeEntity> likes = new ArrayList<>();
 
@@ -152,14 +148,6 @@ public class UserEntity extends BaseEntity {
         this.servers = servers;
     }
 
-
-    public List<MessageEntity> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<MessageEntity> messages) {
-        this.messages = messages;
-    }
 
     public List<LikeEntity> getLikes() {
         return likes;

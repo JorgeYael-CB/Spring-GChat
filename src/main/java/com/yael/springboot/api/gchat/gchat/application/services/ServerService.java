@@ -10,7 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.server.ServerDto;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.messages.EnumTypeMessage;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IMessageWs;
+import com.yael.springboot.api.gchat.gchat.application.mappers.MessageMapper;
 import com.yael.springboot.api.gchat.gchat.application.mappers.ServerMapper;
+import com.yael.springboot.api.gchat.gchat.domain.entities.MessageEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ServerEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 import com.yael.springboot.api.gchat.gchat.domain.exceptions.CustomException;
@@ -27,11 +31,15 @@ public class ServerService {
     @Autowired
     ServerMapper serverMapper;
     @Autowired
+    MessageMapper messageMapper;
+    @Autowired
     ServerRepository serverRepository;
     @Autowired
     UserRepository userRepository;
     @Autowired
     GetUserByAuth getUserByAuth;
+    @Autowired
+    IMessageWs messageWsService;
 
 
     public ResponseService<ServerDto> joinById( Long serverId ){
@@ -49,10 +57,18 @@ public class ServerService {
         serverDb.getUsers().add(userDB);
         userDB.getServers().add(serverDb);
 
+        //TODO: notificar a todos los usuarios mediante websockets que alguien se conecto al servidior y emitir un mensaje
+        MessageEntity messageEntity = new MessageEntity();
+        messageEntity.setServer(serverDb);
+        messageEntity.setIsServerMessage(true);
+        messageEntity.setContent("Welcome " + userDB.getName() + " to new server!.");
+        serverDb.getMessages().add(messageEntity);
+
+        EnumTypeMessage type = EnumTypeMessage.USER_JOINED_SERVER;
+        messageWsService.sendMessageToClients(messageMapper.messageEntityToMessageWs(messageEntity, type));
+
         userRepository.save(userDB);
         serverRepository.save(serverDb);
-
-        //TODO: notificar a todos los usuarios mediante websockets que alguien se conecto al servidior y emitir un mensaje
 
         ResponseService<ServerDto> response = new ResponseService<>();
         response.setData(serverMapper.serverEntityToServerDto(serverDb));
