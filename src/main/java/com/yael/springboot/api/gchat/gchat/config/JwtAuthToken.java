@@ -10,22 +10,20 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IJwtService;
 import com.yael.springboot.api.gchat.gchat.application.services.ResponseService;
 import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.CONTENT_TYPE;
-import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.DATE_EXPIRE;
 import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.HEADER_AUTHORIZATION;
 import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.PREFIX_TOKEN;
-import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.SECRET_KEY;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,17 +33,19 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JwtAuthToken extends UsernamePasswordAuthenticationFilter {
 
+    private final IJwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
 
-    public JwtAuthToken(AuthenticationManager authenticationManager){
+    public JwtAuthToken(AuthenticationManager authenticationManager, IJwtService jwtService){
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        UserEntity user = null;
+        UserEntity user;
         String password = null;
         String email = null;
 
@@ -89,17 +89,8 @@ public class JwtAuthToken extends UsernamePasswordAuthenticationFilter {
         User user = (User) authResult.getPrincipal();
         String email = user.getUsername();
 
-        Collection<?> roles = user.getAuthorities();
-        Claims claims = Jwts.claims()
-            .add("authorities", new ObjectMapper().writeValueAsString(roles))
-            .build();
-
-        String token = Jwts.builder()
-            .subject(email)
-            .claims(claims)
-            .expiration( DATE_EXPIRE )
-            .signWith( SECRET_KEY )
-            .compact();
+        Collection<GrantedAuthority> roles = user.getAuthorities();
+        String token = jwtService.createToken(roles, email);
 
         ResponseService<Object> res = new ResponseService<>();
         res.setData(email);

@@ -18,6 +18,7 @@ import com.yael.springboot.api.gchat.gchat.application.dtos.auth.RegisterUserDto
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UpdateUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IFilesService;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IJwtService;
 import com.yael.springboot.api.gchat.gchat.application.mappers.UserMapper;
 import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
@@ -46,6 +47,8 @@ public class AuthService {
     IFilesService filesService;
     @Autowired
     GetUserByAuth getUserByAuth;
+    @Autowired
+    IJwtService jwtService;
 
 
     @Transactional
@@ -64,7 +67,7 @@ public class AuthService {
 
         userRepository.save(newUser);
 
-        String token = "JWT";
+        String token = this.jwtService.createToken(newUser.getRoles(), newUser.getEmail());
         ResponseService<UserDto> response = new ResponseService<>();
         response.setData(userMapper.userEntityToUserDto(newUser));
         response.setStatus(201);
