@@ -16,6 +16,8 @@ public class ServerDto {
     private List<UserDto> users;
     private UserDto owner;
     private int usersLimit = 20;
+    private String description;
+    private String image;
 
 
     public Long getId() {
@@ -47,6 +49,22 @@ public class ServerDto {
     }
     public void setUsersLimit(int usersLimit) {
         this.usersLimit = usersLimit;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
 }

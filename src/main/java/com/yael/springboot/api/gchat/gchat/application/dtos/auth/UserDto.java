@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.yael.springboot.api.gchat.gchat.domain.entities.ActivityEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
-import com.yael.springboot.api.gchat.gchat.domain.entities.PreferencesEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
 
 
@@ -20,7 +19,6 @@ public class UserDto {
     private List<PhotoEntity> images;
     private List<ActivityEntity> activities;
     private List<UserServerDto> servers;
-    private PreferencesEntity preferences;
 
     //BASE
     private Boolean isActive;
@@ -87,12 +85,6 @@ public class UserDto {
     }
     public void setServers(List<UserServerDto> servers) {
         this.servers = servers;
-    }
-    public PreferencesEntity getPreferences() {
-        return preferences;
-    }
-    public void setPreferences(PreferencesEntity preferences) {
-        this.preferences = preferences;
     }
 
     public Boolean getIsActive() {

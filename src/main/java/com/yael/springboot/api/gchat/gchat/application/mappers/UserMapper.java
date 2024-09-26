@@ -22,7 +22,6 @@ public class UserMapper {
         userDto.setDescription(user.getDescription());
         userDto.setImages(user.getImages());
         userDto.setName(user.getName());
-        userDto.setPreferences(user.getPreferences());
         userDto.setProfileImage(user.getProfileImage());
         userDto.setRoles(user.getRoles());
         userDto.setIsActive(user.getIsActive());

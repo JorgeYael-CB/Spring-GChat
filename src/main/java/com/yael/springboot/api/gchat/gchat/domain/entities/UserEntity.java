@@ -63,9 +63,6 @@ public class UserEntity extends BaseEntity {
     @OneToMany(cascade=CascadeType.ALL)
     private List<LikeEntity> likes = new ArrayList<>();
 
-    @ManyToOne
-    private PreferencesEntity preferences;
-
 
     public String getName() {
         return name;
@@ -170,14 +167,6 @@ public class UserEntity extends BaseEntity {
 
     public void setLikes(List<LikeEntity> likes) {
         this.likes = likes;
-    }
-
-    public PreferencesEntity getPreferences() {
-        return preferences;
-    }
-
-    public void setPreferences(PreferencesEntity preferences) {
-        this.preferences = preferences;
     }
 
 }

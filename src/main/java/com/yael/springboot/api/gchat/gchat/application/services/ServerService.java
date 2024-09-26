@@ -98,7 +98,24 @@ public class ServerService {
     }
 
 
+    @Transactional
     public void delete(){}
+
+
+    @Transactional(readOnly=true)
+    public ResponseService<ServerDto> getServerDetails( Long serverId ){
+        Optional<ServerEntity> server = serverRepository.findById(serverId);
+        if( !server.isPresent() ) throw CustomException.notFoundException("Server not found");
+
+        ServerEntity serverDb = server.get();
+        ResponseService<ServerDto> response = new ResponseService<>();
+        response.setData(serverMapper.serverEntityToServerDto(serverDb));
+        response.setStatus(200);
+        response.setDate(new Date());
+        response.setToken("TOKEN");
+
+        return response;
+    }
 
 
     @Transactional

@@ -26,6 +26,11 @@ public class ServerMapper {
 
         server.setId(serverEntity.getId());
         server.setMessages(serverEntity.getMessages());
+        server.setDescription(serverEntity.getDescription());
+
+        if( serverEntity.getImage() != null ){
+            server.setImage(serverEntity.getImage().getImage());
+        }
 
         if( serverEntity.getOwner() != null ){
             server.setOwner( userMapper.userEntityToUserDto(serverEntity.getOwner()) );
