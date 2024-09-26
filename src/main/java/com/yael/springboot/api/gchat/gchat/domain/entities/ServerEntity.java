@@ -17,6 +17,7 @@ import jakarta.persistence.Table;
 public class ServerEntity extends BaseEntity {
 
     private int usersLimit = 20;
+    private String description;
 
     @ManyToMany
     private List<UserEntity> users = new ArrayList<>();
@@ -70,6 +71,14 @@ public class ServerEntity extends BaseEntity {
 
     public void setImage(PhotoEntity image) {
         this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

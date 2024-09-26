@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,7 +63,39 @@ public class ServerService {
     }
 
 
-    public void joinRandom(){}
+    @Transactional
+    public ResponseService<ServerDto> joinRandom(){
+        UserEntity user = getUserByAuth.getUser();
+
+        Pageable limitOne = PageRequest.of(0, 1);
+        Optional<ServerEntity> server = serverRepository.findRandomServer(user.getId(), limitOne).stream().findFirst();
+        ServerEntity serverDb;
+        int status = 200;
+
+        if( !server.isPresent() ){
+            serverDb = new ServerEntity();
+            serverRepository.save(serverDb);
+            status = 201;
+        } else {
+            serverDb = server.get();
+        }
+
+        serverDb.setDescription("Este servidor fue generado de manera automatica por el servidor, disfruten del contenido!");
+
+        serverDb.getUsers().add(user);
+        user.getServers().add(serverDb);
+
+        userRepository.save(user);
+        serverRepository.save(serverDb);
+
+        ResponseService<ServerDto> response = new ResponseService<>();
+        response.setData(serverMapper.serverEntityToServerDto(serverDb));
+
+        response.setStatus(status);
+        response.setDate(new Date());
+
+        return response;
+    }
 
 
     public void delete(){}

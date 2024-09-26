@@ -37,8 +37,9 @@ public class ServerController {
     }
 
     @GetMapping("/join-random")
-    public ResponseEntity<?> joinRandom(){
-        return null;
+    public ResponseEntity<ResponseService<ServerDto>> joinRandom(){
+        ResponseService<ServerDto> response = serverService.joinRandom();
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @GetMapping("/join/{id}")

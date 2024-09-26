@@ -27,7 +27,9 @@ public class ServerMapper {
         server.setId(serverEntity.getId());
         server.setMessages(serverEntity.getMessages());
 
-        server.setOwner( userMapper.userEntityToUserDto(serverEntity.getOwner()) );
+        if( serverEntity.getOwner() != null ){
+            server.setOwner( userMapper.userEntityToUserDto(serverEntity.getOwner()) );
+        }
 
         serverEntity.getUsers()
             .stream()
