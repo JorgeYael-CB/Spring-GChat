@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.server.ServerDto;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.messages.EnumTypeMessage;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IJwtService;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IMessageWs;
 import com.yael.springboot.api.gchat.gchat.application.mappers.MessageMapper;
 import com.yael.springboot.api.gchat.gchat.application.mappers.ServerMapper;
@@ -40,6 +41,8 @@ public class ServerService {
     GetUserByAuth getUserByAuth;
     @Autowired
     IMessageWs messageWsService;
+    @Autowired
+    IJwtService jwtService;
 
 
     public ResponseService<ServerDto> joinById( Long serverId ){
@@ -70,10 +73,13 @@ public class ServerService {
         userRepository.save(userDB);
         serverRepository.save(serverDb);
 
+        String token = this.jwtService.createToken(userDB.getRoles(), userDB.getEmail());
+
         ResponseService<ServerDto> response = new ResponseService<>();
         response.setData(serverMapper.serverEntityToServerDto(serverDb));
         response.setStatus(200);
         response.setDate(new Date());
+        response.setToken(token);
 
         return response;
     }
@@ -104,8 +110,11 @@ public class ServerService {
         userRepository.save(user);
         serverRepository.save(serverDb);
 
+        String token = this.jwtService.createToken(user.getRoles(), user.getEmail());
+
         ResponseService<ServerDto> response = new ResponseService<>();
         response.setData(serverMapper.serverEntityToServerDto(serverDb));
+        response.setToken(token);
 
         response.setStatus(status);
         response.setDate(new Date());
@@ -150,7 +159,7 @@ public class ServerService {
         serverRepository.save(server);
         userRepository.save(userDb);
 
-        String token = "JWT";
+        String token = this.jwtService.createToken(userDb.getRoles(), userDb.getEmail());
 
         ResponseService<ServerDto> response = new ResponseService<>();
         response.setData(serverMapper.serverEntityToServerDto(server));

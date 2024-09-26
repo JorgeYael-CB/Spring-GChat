@@ -136,7 +136,7 @@ public class AuthService {
 
         userRepository.save(userDb);
 
-        String token = "JWT";
+        String token = this.jwtService.createToken(userDb.getRoles(), userDb.getEmail());
 
         ResponseService<UserDto> response = new ResponseService<>();
         response.setData(userMapper.userEntityToUserDto(userDb));
@@ -164,7 +164,17 @@ public class AuthService {
 
 
     public ResponseService<UserDto> getUserByToken(){
-        return null;
+        UserEntity user = getUserByAuth.getUser();
+
+        String token = jwtService.createToken(user.getRoles(), user.getEmail());
+
+        ResponseService<UserDto> response = new ResponseService<>();
+        response.setData(userMapper.userEntityToUserDto(user));
+        response.setStatus(200);
+        response.setDate(new Date());
+        response.setToken(token);
+
+        return response;
     }
 
 
