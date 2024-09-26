@@ -1,5 +1,6 @@
 package com.yael.springboot.api.gchat.gchat.domain.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -11,15 +12,17 @@ import jakarta.persistence.Table;
 @Table(name = "messages")
 public class MessageEntity extends BaseEntity {
 
+    @Column(nullable=false)
     private String content;
     private Boolean edited = false;
     private Boolean serverMessage = false;
 
-
     @ManyToOne
+    @Column(nullable=false)
     private ServerEntity server;
 
     @ManyToOne
+    @Column(nullable=true)
     private UserEntity user;
 
 
@@ -30,7 +33,6 @@ public class MessageEntity extends BaseEntity {
         this.server = server;
         this.user = user;
     }
-
 
 
     public String getContent() {

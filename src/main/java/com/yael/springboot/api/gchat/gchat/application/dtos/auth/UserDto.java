@@ -1,14 +1,14 @@
 package com.yael.springboot.api.gchat.gchat.application.dtos.auth;
 
-import java.util.Date;
 import java.util.List;
 
+import com.yael.springboot.api.gchat.gchat.application.dtos.BaseDto;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ActivityEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
 
 
-public class UserDto {
+public class UserDto extends BaseDto {
     private String name;
     private String email;
     private String description;
@@ -19,11 +19,6 @@ public class UserDto {
     private List<PhotoEntity> images;
     private List<ActivityEntity> activities;
     private List<UserServerDto> servers;
-
-    //BASE
-    private Boolean isActive;
-    private Date createAt;
-    private Date updatedAt;
 
 
     public String getName() {
@@ -86,29 +81,4 @@ public class UserDto {
     public void setServers(List<UserServerDto> servers) {
         this.servers = servers;
     }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
 }

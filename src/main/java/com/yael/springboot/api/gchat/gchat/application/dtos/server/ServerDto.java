@@ -3,15 +3,14 @@ package com.yael.springboot.api.gchat.gchat.application.dtos.server;
 
 import java.util.List;
 
+import com.yael.springboot.api.gchat.gchat.application.dtos.BaseDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
 import com.yael.springboot.api.gchat.gchat.domain.entities.MessageEntity;
 
 
 
 
-public class ServerDto {
-    private Long id;
-
+public class ServerDto extends BaseDto {
     private List<MessageEntity> messages;
     private List<UserDto> users;
     private UserDto owner;
@@ -20,12 +19,6 @@ public class ServerDto {
     private String image;
 
 
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
     public List<MessageEntity> getMessages() {
         return messages;
     }
