@@ -69,7 +69,6 @@ public class ServerService {
 
     @Transactional
     public ResponseService<ServerDto> create(){
-        //TODO: solo podran crear los admins o los que tienen el role de pago.
         Optional<UserEntity> user = userRepository.findByEmail(this.getUserByAuth.getUsernameLogged());
         if( !user.isPresent() ) throw CustomException.notFoundException("Oops! try again later.");
 

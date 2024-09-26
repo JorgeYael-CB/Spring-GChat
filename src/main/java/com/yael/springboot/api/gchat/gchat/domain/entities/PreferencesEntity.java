@@ -13,45 +13,30 @@ import jakarta.persistence.Table;
 @Table(name = "preferences")
 public class PreferencesEntity extends BaseEntity {
 
-    private int maxAge = 60;
-    private int minAge = 18;
     private String country;
+    private String city;
 
     @ManyToMany
     private List<ActivityEntity> activities = new ArrayList<>();
 
 
-
-    public int getMaxAge() {
-        return maxAge;
-    }
-
-    public void setMaxAge(int maxAge) {
-        this.maxAge = maxAge;
-    }
-
-    public int getMinAge() {
-        return minAge;
-    }
-
-    public void setMinAge(int minAge) {
-        this.minAge = minAge;
-    }
-
     public String getCountry() {
         return country;
     }
-
     public void setCountry(String country) {
         this.country = country;
     }
-
     public List<ActivityEntity> getActivities() {
         return activities;
     }
-
     public void setActivities(List<ActivityEntity> activities) {
         this.activities = activities;
+    }
+    public String getCity() {
+        return city;
+    }
+    public void setCity(String city) {
+        this.city = city;
     }
 
 }

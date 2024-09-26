@@ -27,6 +27,9 @@ public class ServerEntity extends BaseEntity {
     @OneToMany(cascade=CascadeType.ALL)
     private List<MessageEntity> messages = new ArrayList<>();
 
+    @ManyToOne
+    private PhotoEntity image;
+
 
 
     public int getUsersLimit() {
@@ -59,6 +62,14 @@ public class ServerEntity extends BaseEntity {
 
     public void setMessages(List<MessageEntity> messages) {
         this.messages = messages;
+    }
+
+    public PhotoEntity getImage() {
+        return image;
+    }
+
+    public void setImage(PhotoEntity image) {
+        this.image = image;
     }
 
 }

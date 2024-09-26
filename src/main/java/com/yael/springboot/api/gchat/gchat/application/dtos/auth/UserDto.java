@@ -3,7 +3,6 @@ package com.yael.springboot.api.gchat.gchat.application.dtos.auth;
 import java.util.Date;
 import java.util.List;
 
-import com.yael.springboot.api.gchat.gchat.application.dtos.server.ServerDto;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ActivityEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.PreferencesEntity;
@@ -20,8 +19,7 @@ public class UserDto {
     private PhotoEntity profileImage;
     private List<PhotoEntity> images;
     private List<ActivityEntity> activities;
-    private List<ServerDto> servers;
-    private List<ServerDto> serverOwners;
+    private List<UserServerDto> servers;
     private PreferencesEntity preferences;
 
     //BASE
@@ -84,17 +82,11 @@ public class UserDto {
     public void setActivities(List<ActivityEntity> activities) {
         this.activities = activities;
     }
-    public List<ServerDto> getServers() {
+    public List<UserServerDto> getServers() {
         return servers;
     }
-    public void setServers(List<ServerDto> servers) {
+    public void setServers(List<UserServerDto> servers) {
         this.servers = servers;
-    }
-    public List<ServerDto> getServerOwners() {
-        return serverOwners;
-    }
-    public void setServerOwners(List<ServerDto> serverOwners) {
-        this.serverOwners = serverOwners;
     }
     public PreferencesEntity getPreferences() {
         return preferences;
