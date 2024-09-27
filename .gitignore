@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 
 configdb.properties
+images
 
 ### STS ###
 .apt_generated
