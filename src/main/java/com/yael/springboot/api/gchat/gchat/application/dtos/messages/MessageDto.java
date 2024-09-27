@@ -1,7 +1,7 @@
 package com.yael.springboot.api.gchat.gchat.application.dtos.messages;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.BaseDto;
-import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
+import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
 
 
 
@@ -10,7 +10,7 @@ public class MessageDto extends BaseDto {
     private Boolean edited = false;
     private Boolean serverMessage = false;
     private Long serverId;
-    private UserEntity user;
+    private UserDto user;
 
 
     public String getContent() {
@@ -37,11 +37,11 @@ public class MessageDto extends BaseDto {
         this.serverMessage = serverMessage;
     }
 
-    public UserEntity getUser() {
+    public UserDto getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(UserDto user) {
         this.user = user;
     }
 
