@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -72,16 +73,18 @@ public class MessageService {
 
 
     @Transactional(readOnly=true)
-    public ResponseService<List<MessageDto>> getMessages( PaginationDto pagination, Long serverId ){
+    public ResponseServicePagination<List<MessageDto>> getMessages( PaginationDto pagination, Long serverId ){
         if( !serverRepository.findById(serverId).isPresent() ) throw CustomException.notFoundException("Server not found");
         Pageable pageable = PageRequest.of(pagination.getPage(), pagination.getLimit(), Sort.by(Sort.Direction.DESC, "id"));
 
-        List<MessageEntity> messages = messageRepository.findByServerId(serverId, pageable);
+        Page<MessageEntity> messages = messageRepository.findByServerId(serverId, pageable);
         List<MessageDto> messageDtos = messages.stream().map( m -> messageMapper.messageEntityToMessageDto(m)).collect(Collectors.toList());
 
-        ResponseService<List<MessageDto>> response = new ResponseService<>();
+        ResponseServicePagination<List<MessageDto>> response = new ResponseServicePagination<>();
         response.setStatus(200);
         response.setData(messageDtos);
+        response.setCurrentPage(pagination.getPage());
+        response.setMaxPage(messages.getTotalPages() - 1);
 
         return response;
     }
