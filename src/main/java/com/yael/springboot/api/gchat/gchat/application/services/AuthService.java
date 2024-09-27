@@ -53,6 +53,7 @@ public class AuthService {
 
     @Transactional
     public ResponseService<UserDto> Register( RegisterUserDto registerUserDto ){
+        if( userRepository.findByEmail(registerUserDto.getEmail()).isPresent() ) throw CustomException.badRequestException("User already exists");
         Optional<RoleEntity> userRole = rolesRepository.findByRole("ROLE_USER");
         String passwordBcrypt = passwordEncoder.encode(registerUserDto.getPassword());
 
