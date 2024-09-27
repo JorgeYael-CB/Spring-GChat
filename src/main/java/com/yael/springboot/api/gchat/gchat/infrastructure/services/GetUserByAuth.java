@@ -1,7 +1,5 @@
 package com.yael.springboot.api.gchat.gchat.infrastructure.services;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,15 +23,12 @@ public class GetUserByAuth {
     public UserEntity getUser(){
         final String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Optional<UserEntity> user = userRepository.findByEmail(principal);
-        if( !user.isPresent() ) throw CustomException.badRequestException("User not existys");
-
-        return user.get();
+        return userRepository.findByEmail(principal)
+            .orElseThrow( () -> CustomException.notFoundException("user not found"));
     }
 
     public String getUsernameLogged(){
-        final String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return principal;
+        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 }

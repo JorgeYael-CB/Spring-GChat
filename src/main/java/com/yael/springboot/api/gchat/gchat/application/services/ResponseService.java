@@ -12,6 +12,24 @@ public class ResponseService<T> {
     private String token;
 
 
+    public ResponseService(){}
+
+    public ResponseService(Date date, T data, int status, String token) {
+        this(date, data, status);
+        this.token = token;
+    }
+
+    public ResponseService(Date date, T data, int status) {
+        this(date, data);
+        this.status = status;
+    }
+
+    public ResponseService(Date date, T data) {
+        this.date = date;
+        this.data = data;
+    }
+
+
     public Date getDate() {
         return date;
     }

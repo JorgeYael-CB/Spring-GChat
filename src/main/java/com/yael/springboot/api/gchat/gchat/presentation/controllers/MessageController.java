@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +34,7 @@ public class MessageController {
 
 
     @PostMapping("/{id}")
-    public ResponseEntity<ResponseService<MessageDto>> newMessage(@PathVariable Long id, @RequestBody NewMessageDto messageDto) {
+    public ResponseEntity<ResponseService<Boolean>> newMessage(@PathVariable Long id, @RequestBody NewMessageDto messageDto) {
         var response = messageService.sendMessage(id, messageDto);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
@@ -41,6 +42,12 @@ public class MessageController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseServicePagination<List<MessageDto>>> getMessages(@PathVariable Long id, @ModelAttribute PaginationDto paginationDto) {
         ResponseServicePagination<List<MessageDto>> response = messageService.getMessages(paginationDto, id);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseService<Boolean>> updateMessage( @PathVariable Long id, @RequestBody NewMessageDto messageDto ){
+        ResponseService<Boolean> response = messageService.updateMessage(id, messageDto);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
