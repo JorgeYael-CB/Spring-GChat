@@ -1,5 +1,7 @@
 package com.yael.springboot.api.gchat.gchat.presentation.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,8 +38,9 @@ public class MessageController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseService<MessageDto>> getMessages(@PathVariable Long id, @ModelAttribute PaginationDto paginationDto) {
-        return null;
+    public ResponseEntity<ResponseService<List<MessageDto>>> getMessages(@PathVariable Long id, @ModelAttribute PaginationDto paginationDto) {
+        ResponseService<List<MessageDto>> response = messageService.getMessages(paginationDto, id);
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
 

@@ -3,8 +3,12 @@ package com.yael.springboot.api.gchat.gchat.application.services;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,7 +73,17 @@ public class MessageService {
 
     @Transactional(readOnly=true)
     public ResponseService<List<MessageDto>> getMessages( PaginationDto pagination, Long serverId ){
-        return null;
+        if( !serverRepository.findById(serverId).isPresent() ) throw CustomException.notFoundException("Server not found");
+        Pageable pageable = PageRequest.of(pagination.getPage(), pagination.getLimit(), Sort.by(Sort.Direction.DESC, "id"));
+
+        List<MessageEntity> messages = messageRepository.findByServerId(serverId, pageable);
+        List<MessageDto> messageDtos = messages.stream().map( m -> messageMapper.messageEntityToMessageDto(m)).collect(Collectors.toList());
+
+        ResponseService<List<MessageDto>> response = new ResponseService<>();
+        response.setStatus(200);
+        response.setData(messageDtos);
+
+        return response;
     }
 
     @Transactional
