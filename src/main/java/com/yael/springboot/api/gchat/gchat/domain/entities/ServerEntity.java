@@ -7,6 +7,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.cache.annotation.Cacheable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
@@ -30,6 +32,7 @@ public class ServerEntity extends BaseEntity {
     @ManyToOne
     private UserEntity owner;
 
+    @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL)
     private List<MessageEntity> messages = new ArrayList<>();
 

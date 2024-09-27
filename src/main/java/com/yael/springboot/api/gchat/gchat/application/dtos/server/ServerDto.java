@@ -5,13 +5,11 @@ import java.util.List;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.BaseDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
-import com.yael.springboot.api.gchat.gchat.application.dtos.messages.MessageDto;
 
 
 
 
 public class ServerDto extends BaseDto {
-    private List<MessageDto> messages;
     private List<UserDto> users;
     private UserDto owner;
     private int usersLimit = 20;
@@ -19,12 +17,6 @@ public class ServerDto extends BaseDto {
     private String image;
 
 
-    public List<MessageDto> getMessages() {
-        return messages;
-    }
-    public void setMessages(List<MessageDto> messages) {
-        this.messages = messages;
-    }
     public List<UserDto> getUsers() {
         return users;
     }

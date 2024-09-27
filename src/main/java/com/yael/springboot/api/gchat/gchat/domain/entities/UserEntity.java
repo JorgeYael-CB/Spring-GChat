@@ -7,6 +7,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.cache.annotation.Cacheable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
@@ -38,6 +39,7 @@ public class UserEntity extends BaseEntity {
     private String description;
     private Integer age = 18;
     private String country;
+    private String city;
 
 
     @JsonIgnoreProperties({"users", "handler", "hibernateLazyInitializer"})
@@ -62,8 +64,9 @@ public class UserEntity extends BaseEntity {
     @ManyToMany
     private List<ServerEntity> servers = new ArrayList<>();
 
-    @OneToMany(cascade=CascadeType.ALL)
-    private List<LikeEntity> likes = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(cascade=CascadeType.REMOVE)
+    private List<MessageEntity> messages = new ArrayList<>();
 
 
     public String getName() {
@@ -154,13 +157,20 @@ public class UserEntity extends BaseEntity {
         this.servers = servers;
     }
 
-
-    public List<LikeEntity> getLikes() {
-        return likes;
+    public List<MessageEntity> getMessages() {
+        return messages;
     }
 
-    public void setLikes(List<LikeEntity> likes) {
-        this.likes = likes;
+    public void setMessages(List<MessageEntity> messages) {
+        this.messages = messages;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
 }

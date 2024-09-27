@@ -1,9 +1,5 @@
 package com.yael.springboot.api.gchat.gchat.domain.entities;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.cache.annotation.Cacheable;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,8 +8,6 @@ import jakarta.persistence.Table;
 
 
 
-@Cacheable
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 @Table(name = "roles")
 public class RoleEntity {
