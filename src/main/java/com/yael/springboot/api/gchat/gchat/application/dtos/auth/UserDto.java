@@ -3,9 +3,9 @@ package com.yael.springboot.api.gchat.gchat.application.dtos.auth;
 import java.util.List;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.BaseDto;
+import com.yael.springboot.api.gchat.gchat.application.dtos.photos.PhotoPreviewDto;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ActivityEntity;
-import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
-import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
+
 
 
 public class UserDto extends BaseDto {
@@ -14,9 +14,9 @@ public class UserDto extends BaseDto {
     private String description;
     private int age;
     private String country;
-    private List<RoleEntity> roles;
-    private PhotoEntity profileImage;
-    private List<PhotoEntity> images;
+    private List<String> roles;
+    private PhotoPreviewDto profileImage;
+    private List<PhotoPreviewDto> images;
     private List<ActivityEntity> activities;
     private List<UserServerDto> servers;
 
@@ -51,22 +51,22 @@ public class UserDto extends BaseDto {
     public void setCountry(String country) {
         this.country = country;
     }
-    public List<RoleEntity> getRoles() {
+    public List<String> getRoles() {
         return roles;
     }
-    public void setRoles(List<RoleEntity> roles) {
+    public void setRoles(List<String> roles) {
         this.roles = roles;
     }
-    public PhotoEntity getProfileImage() {
+    public PhotoPreviewDto getProfileImage() {
         return profileImage;
     }
-    public void setProfileImage(PhotoEntity profileImage) {
+    public void setProfileImage(PhotoPreviewDto profileImage) {
         this.profileImage = profileImage;
     }
-    public List<PhotoEntity> getImages() {
+    public List<PhotoPreviewDto> getImages() {
         return images;
     }
-    public void setImages(List<PhotoEntity> images) {
+    public void setImages(List<PhotoPreviewDto> images) {
         this.images = images;
     }
     public List<ActivityEntity> getActivities() {
