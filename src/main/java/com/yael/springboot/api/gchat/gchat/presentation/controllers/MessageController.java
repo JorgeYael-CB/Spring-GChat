@@ -26,7 +26,7 @@ import com.yael.springboot.api.gchat.gchat.application.services.ResponseServiceP
 
 
 @RestController
-@RequestMapping("/messages")
+@RequestMapping("/api/messages")
 public class MessageController {
 
 
