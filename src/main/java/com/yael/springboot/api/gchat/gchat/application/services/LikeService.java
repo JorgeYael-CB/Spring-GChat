@@ -5,12 +5,12 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IImagesRepository;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.ILikeRepository;
 import com.yael.springboot.api.gchat.gchat.domain.entities.LikeEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 import com.yael.springboot.api.gchat.gchat.domain.exceptions.CustomException;
-import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.ImageRepository;
-import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.LikeRepository;
 import com.yael.springboot.api.gchat.gchat.infrastructure.services.GetUserByAuth;
 
 
@@ -19,9 +19,9 @@ import com.yael.springboot.api.gchat.gchat.infrastructure.services.GetUserByAuth
 public class LikeService {
 
     @Autowired
-    ImageRepository imageRepository;
+    IImagesRepository imageRepository;
     @Autowired
-    LikeRepository likeRepository;
+    ILikeRepository likeRepository;
     @Autowired
     GetUserByAuth getUserByAuth;
 

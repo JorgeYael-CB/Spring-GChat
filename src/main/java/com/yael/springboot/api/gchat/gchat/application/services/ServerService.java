@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.server.ServerDto;
-import com.yael.springboot.api.gchat.gchat.application.interfaces.messages.EnumTypeMessage;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.Enums.EnumTypeMessage;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IServerRepository;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IUserRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IJwtService;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IMessageWs;
 import com.yael.springboot.api.gchat.gchat.application.mappers.MessageMapper;
@@ -19,8 +21,6 @@ import com.yael.springboot.api.gchat.gchat.domain.entities.MessageEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ServerEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 import com.yael.springboot.api.gchat.gchat.domain.exceptions.CustomException;
-import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.ServerRepository;
-import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.UserRepository;
 import com.yael.springboot.api.gchat.gchat.infrastructure.services.GetUserByAuth;
 
 
@@ -34,9 +34,9 @@ public class ServerService {
     @Autowired
     MessageMapper messageMapper;
     @Autowired
-    ServerRepository serverRepository;
+    IServerRepository serverRepository;
     @Autowired
-    UserRepository userRepository;
+    IUserRepository userRepository;
     @Autowired
     GetUserByAuth getUserByAuth;
     @Autowired

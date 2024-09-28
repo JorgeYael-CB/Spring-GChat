@@ -1,4 +1,4 @@
-package com.yael.springboot.api.gchat.gchat.application.interfaces.messages;
+package com.yael.springboot.api.gchat.gchat.application.interfaces.Enums;
 
 
 

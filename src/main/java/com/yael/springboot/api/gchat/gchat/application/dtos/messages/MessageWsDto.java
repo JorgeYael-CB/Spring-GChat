@@ -1,6 +1,6 @@
 package com.yael.springboot.api.gchat.gchat.application.dtos.messages;
 
-import com.yael.springboot.api.gchat.gchat.application.interfaces.messages.EnumTypeMessage;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.Enums.EnumTypeMessage;
 
 
 

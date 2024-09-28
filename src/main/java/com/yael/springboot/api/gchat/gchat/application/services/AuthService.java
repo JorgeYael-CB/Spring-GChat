@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.RegisterUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UpdateUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IRolesRepository;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IUserRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IFilesService;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IJwtService;
 import com.yael.springboot.api.gchat.gchat.application.mappers.UserMapper;
@@ -24,8 +26,6 @@ import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 import com.yael.springboot.api.gchat.gchat.domain.exceptions.CustomException;
-import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.IRolesRepository;
-import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.UserRepository;
 import com.yael.springboot.api.gchat.gchat.infrastructure.services.GetUserByAuth;
 
 
@@ -36,7 +36,7 @@ import com.yael.springboot.api.gchat.gchat.infrastructure.services.GetUserByAuth
 public class AuthService {
 
     @Autowired
-    UserRepository userRepository;
+    IUserRepository userRepository;
     @Autowired
     IRolesRepository rolesRepository;
     @Autowired

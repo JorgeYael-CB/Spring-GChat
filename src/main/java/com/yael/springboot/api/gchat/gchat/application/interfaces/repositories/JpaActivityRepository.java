@@ -1,4 +1,4 @@
-package com.yael.springboot.api.gchat.gchat.infrastructure.repositories;
+package com.yael.springboot.api.gchat.gchat.application.interfaces.repositories;
 
 import java.util.Optional;
 
@@ -8,7 +8,6 @@ import com.yael.springboot.api.gchat.gchat.domain.entities.ActivityEntity;
 
 
 
-
-public interface IActivityRepository extends JpaRepository<ActivityEntity, Long> {
+public interface JpaActivityRepository extends JpaRepository<ActivityEntity, Long> {
     Optional<ActivityEntity> findByActivity(String activity);
 }

@@ -16,7 +16,10 @@ import com.yael.springboot.api.gchat.gchat.application.dtos.PaginationDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.messages.MessageDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.messages.MessageWsDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.messages.NewMessageDto;
-import com.yael.springboot.api.gchat.gchat.application.interfaces.messages.EnumTypeMessage;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.Enums.EnumTypeMessage;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IMessageRepository;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IRolesRepository;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IServerRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IMessageWs;
 import com.yael.springboot.api.gchat.gchat.application.mappers.MessageMapper;
 import com.yael.springboot.api.gchat.gchat.domain.entities.MessageEntity;
@@ -24,9 +27,6 @@ import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ServerEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 import com.yael.springboot.api.gchat.gchat.domain.exceptions.CustomException;
-import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.IRolesRepository;
-import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.MessageRepository;
-import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.ServerRepository;
 import com.yael.springboot.api.gchat.gchat.infrastructure.services.GetUserByAuth;
 
 
@@ -36,9 +36,9 @@ import com.yael.springboot.api.gchat.gchat.infrastructure.services.GetUserByAuth
 public class MessageService {
 
     @Autowired
-    MessageRepository messageRepository;
+    IMessageRepository messageRepository;
     @Autowired
-    ServerRepository serverRepository;
+    IServerRepository serverRepository;
     @Autowired
     GetUserByAuth getUserByAuth;
     @Autowired
@@ -93,6 +93,7 @@ public class MessageService {
         return response;
     }
 
+
     @Transactional
     public ResponseService<Boolean> updateMessage( Long messageId, NewMessageDto messageDto ){
         MessageEntity messageDb = messageRepository.findById(messageId)
@@ -111,6 +112,7 @@ public class MessageService {
 
         return new ResponseService<>(new Date(), true, 200);
     }
+
 
     @Transactional
     public ResponseService<Boolean> deleteMessage( Long messageId ){

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.messages.MessageDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.messages.MessageWsDto;
-import com.yael.springboot.api.gchat.gchat.application.interfaces.messages.EnumTypeMessage;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.Enums.EnumTypeMessage;
 import com.yael.springboot.api.gchat.gchat.domain.entities.MessageEntity;
 
 

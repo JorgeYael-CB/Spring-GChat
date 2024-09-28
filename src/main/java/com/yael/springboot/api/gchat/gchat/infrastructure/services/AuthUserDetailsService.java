@@ -14,8 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IUserRepository;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
-import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.UserRepository;
 
 
 
@@ -24,7 +24,7 @@ import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.UserRepos
 public class AuthUserDetailsService implements UserDetailsService {
 
     @Autowired
-    UserRepository repository;
+    IUserRepository repository;
 
 
     @Transactional(readOnly = true)
