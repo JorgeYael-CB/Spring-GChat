@@ -1,6 +1,10 @@
 package com.yael.springboot.api.gchat.gchat.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -10,38 +14,26 @@ import jakarta.persistence.Table;
 @Table(name = "likes")
 public class LikeEntity extends BaseEntity {
 
-    private int likes;
-
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     private UserEntity user;
 
-    @ManyToOne
-    private PhotoEntity photoEntity;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="image_id")
+    @JsonIgnore
+    private PhotoEntity image;
 
-
-
-    public int getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
-    }
 
     public UserEntity getUser() {
         return user;
     }
-
     public void setUser(UserEntity user) {
         this.user = user;
     }
-
-    public PhotoEntity getPhotoEntity() {
-        return photoEntity;
+    public PhotoEntity getImage() {
+        return image;
     }
-
-    public void setPhotoEntity(PhotoEntity photoEntity) {
-        this.photoEntity = photoEntity;
+    public void setImage(PhotoEntity image) {
+        this.image = image;
     }
 
 }

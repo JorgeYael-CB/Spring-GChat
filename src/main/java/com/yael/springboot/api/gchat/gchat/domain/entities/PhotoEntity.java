@@ -16,7 +16,7 @@ public class PhotoEntity extends BaseEntity {
 
     private String image;
 
-    @OneToMany(cascade=CascadeType.ALL) // que sean borrados los likes de la foto
+    @OneToMany(mappedBy= "image", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<LikeEntity> likes = new ArrayList<>();
 
 
