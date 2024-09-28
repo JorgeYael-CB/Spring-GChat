@@ -1,9 +1,7 @@
 package com.yael.springboot.api.gchat.gchat.application.services;
 
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.RegisterUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UpdateUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IUserAuthProjection;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IRolesRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IUserRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IFilesService;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IJwtService;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IValidateClassService;
 import com.yael.springboot.api.gchat.gchat.application.mappers.UserMapper;
 import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
@@ -49,10 +49,12 @@ public class AuthService {
     GetUserByAuth getUserByAuth;
     @Autowired
     IJwtService jwtService;
+    @Autowired
+    IValidateClassService validateClassService;
 
 
     @Transactional
-    public ResponseService<UserDto> Register( RegisterUserDto registerUserDto ){
+    public ResponseService<IUserAuthProjection> Register( RegisterUserDto registerUserDto ){
         if( userRepository.findByEmail(registerUserDto.getEmail()).isPresent() ) throw CustomException.badRequestException("User already exists");
         Optional<RoleEntity> userRole = rolesRepository.findByRole("ROLE_USER");
         String passwordBcrypt = passwordEncoder.encode(registerUserDto.getPassword());
@@ -63,14 +65,14 @@ public class AuthService {
         newUser.setPassword(passwordBcrypt);
 
         if( userRole.isPresent() ){
-            newUser.setRoles( Arrays.asList(userRole.get()) );
+            newUser.getRoles().add(userRole.get());
         }
 
         userRepository.save(newUser);
 
         String token = this.jwtService.createToken(newUser.getRoles(), newUser.getEmail());
-        ResponseService<UserDto> response = new ResponseService<>();
-        response.setData(userMapper.userEntityToUserDto(newUser));
+        ResponseService<IUserAuthProjection> response = new ResponseService<>();
+        response.setData(userRepository.findUserById(newUser.getId()).get());
         response.setStatus(201);
         response.setToken(token);
 
@@ -80,36 +82,16 @@ public class AuthService {
 
     @Transactional
     public ResponseService<UserDto> updateUser( UpdateUserDto user ){
-        // Validamos que tenga al menos un campo
-        Method[] methods = UpdateUserDto.class.getDeclaredMethods();
-        Boolean isAllMethodsEmpty = true;
+        Boolean isAllMethodsEmpty = validateClassService.fieldsEmptyClass(UpdateUserDto.class, user);
+        if( isAllMethodsEmpty ) throw CustomException.badRequestException("Missing fields to updated");
 
-        for (Method meth : methods) {
-            if( meth.getName().startsWith("get") ){
+        UserEntity userDb = userRepository.findByEmail(getUserByAuth.getUsernameLogged())
+            .orElseThrow( () -> CustomException.notFoundException("User not found"));
 
-                try {
-                    Object value = meth.invoke(user);
-                    if( value != null ){
-                        isAllMethodsEmpty = false;
-                        break;
-                    }
-                } catch (Exception e) {}
-            }
-        }
-
-        if( isAllMethodsEmpty ){
-            throw CustomException.badRequestException("Missing fields to updated");
-        }
-
-        Optional<UserEntity> userOptional = userRepository.findByEmail(getUserByAuth.getUsernameLogged());
-        if( !userOptional.isPresent() ) throw CustomException.notFoundException("User not exists");
-
-        UserEntity userDb = userOptional.get();
         if (user.getAge() != null) userDb.setAge(user.getAge());
         if (user.getCountry() != null) userDb.setCountry(user.getCountry());
         if (user.getDescription() != null) userDb.setDescription(user.getDescription());
         if (user.getName() != null) userDb.setName(user.getName());
-
         if( user.getImages() != null && !user.getImages().isEmpty() ){
             List<PhotoEntity> images = new ArrayList<>();
 
@@ -134,8 +116,6 @@ public class AuthService {
 
             userDb.setProfileImage(photoEntity);
         }
-
-        userRepository.save(userDb);
 
         String token = this.jwtService.createToken(userDb.getRoles(), userDb.getEmail());
 

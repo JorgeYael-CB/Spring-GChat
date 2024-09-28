@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IUserAuthProjection;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IUserRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.JpaUserRepository;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
@@ -46,6 +47,11 @@ public class UserRepositoryImpl implements IUserRepository {
     @Override
     public Optional<UserEntity> findByEmail(String email) {
         return jpaUserRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<IUserAuthProjection> findUserById(Long id) {
+        return jpaUserRepository.findUserById(id);
     }
 
 

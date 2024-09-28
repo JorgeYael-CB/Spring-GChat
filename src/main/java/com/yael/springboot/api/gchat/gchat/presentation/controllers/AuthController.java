@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.RegisterUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UpdateUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IUserAuthProjection;
 import com.yael.springboot.api.gchat.gchat.application.services.AuthService;
 import com.yael.springboot.api.gchat.gchat.application.services.ResponseService;
 
@@ -31,8 +32,8 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseService<UserDto>> register( @Valid @RequestBody RegisterUserDto registerUserDto ){
-        ResponseService<UserDto> response = authService.Register(registerUserDto);
+    public ResponseEntity<ResponseService<IUserAuthProjection>> register( @Valid @RequestBody RegisterUserDto registerUserDto ){
+        ResponseService<IUserAuthProjection> response = authService.Register(registerUserDto);
 
         return ResponseEntity.status(response.getStatus()).body(response);
     }
