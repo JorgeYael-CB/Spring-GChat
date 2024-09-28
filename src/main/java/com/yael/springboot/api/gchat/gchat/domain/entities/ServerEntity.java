@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -27,6 +29,11 @@ public class ServerEntity extends BaseEntity {
     private String description;
 
     @ManyToMany
+    @JoinTable(
+        name="user_server", // tabla intermedia siempre estara en bidireccional
+        joinColumns = @JoinColumn(name="user_id"),
+        inverseJoinColumns = @JoinColumn(name="server_id")
+    )
     private List<UserEntity> users = new ArrayList<>();
 
     @ManyToOne

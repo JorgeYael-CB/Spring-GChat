@@ -2,7 +2,6 @@ package com.yael.springboot.api.gchat.gchat.application.services;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,11 @@ import com.yael.springboot.api.gchat.gchat.application.interfaces.messages.EnumT
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IMessageWs;
 import com.yael.springboot.api.gchat.gchat.application.mappers.MessageMapper;
 import com.yael.springboot.api.gchat.gchat.domain.entities.MessageEntity;
+import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ServerEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 import com.yael.springboot.api.gchat.gchat.domain.exceptions.CustomException;
+import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.IRolesRepository;
 import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.MessageRepository;
 import com.yael.springboot.api.gchat.gchat.infrastructure.repositories.ServerRepository;
 import com.yael.springboot.api.gchat.gchat.infrastructure.services.GetUserByAuth;
@@ -44,6 +45,8 @@ public class MessageService {
     MessageMapper messageMapper;
     @Autowired
     IMessageWs messageWs;
+    @Autowired
+    IRolesRepository rolesRepository;
 
 
     @Transactional
@@ -92,11 +95,10 @@ public class MessageService {
 
     @Transactional
     public ResponseService<Boolean> updateMessage( Long messageId, NewMessageDto messageDto ){
-        Optional<MessageEntity> message = messageRepository.findById(messageId);
-        if( !message.isPresent() ) throw CustomException.notFoundException("Message to edit not found");
+        MessageEntity messageDb = messageRepository.findById(messageId)
+            .orElseThrow( () -> CustomException.notFoundException("Message to edit not found"));
 
         UserEntity user = getUserByAuth.getUser();
-        MessageEntity messageDb = message.get();
 
         if( !messageDb.getUser().getId().equals(user.getId()) ) throw CustomException.unaothorizedException("Only the person who sent the message can update it");
         messageDb.setContent(messageDto.getContent());
@@ -107,16 +109,27 @@ public class MessageService {
         MessageWsDto msg = messageMapper.messageEntityToMessageWs(messageDb, type);
         messageWs.sendMessageToClients(msg);
 
-        ResponseService<Boolean> response = new ResponseService<>();
-        response.setData(true);
-        response.setStatus(200);
-
-        return response;
+        return new ResponseService<>(new Date(), true, 200);
     }
 
     @Transactional
-    public ResponseService<MessageDto> deleteMessage( Long messageId ){
-        return null;
+    public ResponseService<Boolean> deleteMessage( Long messageId ){
+        MessageEntity message = messageRepository.findById(messageId)
+            .orElseThrow( () -> CustomException.notFoundException("Message not found to deleted"));
+        UserEntity user = getUserByAuth.getUser();
+        RoleEntity roleAdmin = rolesRepository.findByRole("ROLE_ADMIN").get();
+
+        if( !user.getRoles().contains(roleAdmin) && !message.getUser().getId().equals(user.getId()) ){
+            throw CustomException.unaothorizedException("only the creator can delete the message.");
+        }
+
+        message.setIsActive(false);
+
+        EnumTypeMessage type = EnumTypeMessage.DELETE_MESSAGE;
+        MessageWsDto msg = messageMapper.messageEntityToMessageWs(message, type);
+        messageWs.sendMessageToClients(msg);
+
+        return new ResponseService<>(new Date(), true, 200);
     }
 
 }

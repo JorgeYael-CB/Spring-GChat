@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,6 +49,12 @@ public class MessageController {
     @PutMapping("/{id}")
     public ResponseEntity<ResponseService<Boolean>> updateMessage( @PathVariable Long id, @RequestBody NewMessageDto messageDto ){
         ResponseService<Boolean> response = messageService.updateMessage(id, messageDto);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseService<Boolean>> deleteMessage( @PathVariable Long id ){
+        var response = messageService.deleteMessage(id);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 

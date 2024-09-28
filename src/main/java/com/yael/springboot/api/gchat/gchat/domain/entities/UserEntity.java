@@ -13,13 +13,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 
 
@@ -42,14 +39,8 @@ public class UserEntity extends BaseEntity {
     private String city;
 
 
-    @JsonIgnoreProperties({"users", "handler", "hibernateLazyInitializer"})
+    @JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
     @ManyToMany
-    @JoinTable(
-        name="user_roles", // tabla intermedia
-        joinColumns = @JoinColumn(name="user_id"),
-        inverseJoinColumns = @JoinColumn(name="role_id"),
-        uniqueConstraints= { @UniqueConstraint(columnNames={"user_id", "role_id"}) }
-    )
     private List<RoleEntity> roles = new ArrayList<>();
 
     @ManyToOne(cascade=CascadeType.ALL)
@@ -61,11 +52,11 @@ public class UserEntity extends BaseEntity {
     @ManyToMany
     private List<ActivityEntity> activities = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(mappedBy="users")
     private List<ServerEntity> servers = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(cascade=CascadeType.REMOVE)
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<MessageEntity> messages = new ArrayList<>();
 
 

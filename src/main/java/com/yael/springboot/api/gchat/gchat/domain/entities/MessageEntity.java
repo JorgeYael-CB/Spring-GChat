@@ -2,6 +2,7 @@ package com.yael.springboot.api.gchat.gchat.domain.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -18,9 +19,11 @@ public class MessageEntity extends BaseEntity {
     private Boolean serverMessage = false;
 
     @ManyToOne
+    @JoinColumn(name="server_id")
     private ServerEntity server;
 
     @ManyToOne
+    @JoinColumn(name="user_id")
     private UserEntity user;
 
 
