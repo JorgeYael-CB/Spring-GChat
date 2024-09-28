@@ -3,6 +3,7 @@ package com.yael.springboot.api.gchat.gchat.presentation.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,17 @@ public class AuthController {
         return ResponseEntity.status(200).body(response);
     }
 
+    @GetMapping("/validate-token")
+    public ResponseEntity<ResponseService<UserDto>> validateToken(){
+        var response = authService.getUserByToken();
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ResponseService<Boolean>> delete(){
+        var response = authService.deleteAccount();
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
 
 
 }
