@@ -11,5 +11,6 @@ public interface ILikeRepository {
 
     public LikeEntity save(LikeEntity like);
     public Collection<LikeEntity> findLikesByImageId( Long imageId );
+    public int deleteByUserIdAndImageId( Long userId, Long iamgeId );
 
 }

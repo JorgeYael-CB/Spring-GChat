@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.PaginationDto;
-import com.yael.springboot.api.gchat.gchat.application.dtos.messages.MessageDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.messages.NewMessageDto;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IMessageProjection;
 import com.yael.springboot.api.gchat.gchat.application.services.MessageService;
 import com.yael.springboot.api.gchat.gchat.application.services.ResponseService;
 import com.yael.springboot.api.gchat.gchat.application.services.ResponseServicePagination;
@@ -41,8 +41,8 @@ public class MessageController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseServicePagination<List<MessageDto>>> getMessages(@PathVariable Long id, @ModelAttribute PaginationDto paginationDto) {
-        ResponseServicePagination<List<MessageDto>> response = messageService.getMessages(paginationDto, id);
+    public ResponseEntity<ResponseServicePagination<List<IMessageProjection>>> getMessages(@PathVariable Long id, @ModelAttribute PaginationDto paginationDto) {
+        ResponseServicePagination<List<IMessageProjection>> response = messageService.getMessages(paginationDto, id);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 

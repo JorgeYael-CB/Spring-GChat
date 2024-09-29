@@ -55,7 +55,7 @@ public class AuthService {
 
     @Transactional
     public ResponseService<IUserAuthProjection> Register( RegisterUserDto registerUserDto ){
-        if( userRepository.findByEmail(registerUserDto.getEmail()).isPresent() ) throw CustomException.badRequestException("User already exists");
+        if( userRepository.findUserByEmailOrName(registerUserDto.getEmail(), registerUserDto.getName()).isPresent() ) throw CustomException.badRequestException("User already exists");
         Optional<RoleEntity> userRole = rolesRepository.findByRole("ROLE_USER");
         String passwordBcrypt = passwordEncoder.encode(registerUserDto.getPassword());
 
@@ -64,9 +64,7 @@ public class AuthService {
         newUser.setEmail(registerUserDto.getEmail());
         newUser.setPassword(passwordBcrypt);
 
-        if( userRole.isPresent() ){
-            newUser.getRoles().add(userRole.get());
-        }
+        if( userRole.isPresent() ) newUser.getRoles().add(userRole.get());
 
         userRepository.save(newUser);
 

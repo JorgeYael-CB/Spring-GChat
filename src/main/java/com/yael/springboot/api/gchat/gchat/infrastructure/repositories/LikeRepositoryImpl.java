@@ -27,4 +27,9 @@ public class LikeRepositoryImpl implements ILikeRepository {
         return jpaLikeRepository.findLikesByImageId(imageId);
     }
 
+    @Override
+    public int deleteByUserIdAndImageId(Long userId, Long iamgeId) {
+        return jpaLikeRepository.deleteByUserIdAndImageId(userId, iamgeId);
+    }
+
 }

@@ -21,7 +21,7 @@ public class LikeController {
 
     @PostMapping("/image/{id}")
     public ResponseEntity<ResponseService<Boolean>> addLikeImage(@PathVariable Long id) {
-        var res = likeService.addLikeImage(id);
+        var res = likeService.likeImage(id);
         return ResponseEntity.status(res.getStatus()).body(res);
     }
 

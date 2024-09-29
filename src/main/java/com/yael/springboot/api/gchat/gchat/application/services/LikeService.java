@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IImagesRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.ILikeRepository;
@@ -26,10 +27,20 @@ public class LikeService {
     GetUserByAuth getUserByAuth;
 
 
-    public ResponseService<Boolean> addLikeImage( Long imageId ){
+    @Transactional
+    public ResponseService<Boolean> likeImage( Long imageId ){
         PhotoEntity image = imageRepository.findById(imageId)
             .orElseThrow( () -> CustomException.notFoundException("Image not found"));
         UserEntity user = getUserByAuth.getUser();
+        Boolean delete = image.getLikes().removeIf( l -> l.getUser()
+            .getId()
+            .equals(user.getId())
+        );
+
+        if( delete ){
+            likeRepository.deleteByUserIdAndImageId(user.getId(), imageId);
+            return new ResponseService<>(new Date(), true, 200);
+        }
 
         LikeEntity like = new LikeEntity();
         like.setUser(user);

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IMessageProjection;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IMessageRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.JpaMessageRepository;
 import com.yael.springboot.api.gchat.gchat.domain.entities.MessageEntity;
@@ -34,6 +35,11 @@ public class MessageRepositoryImpl implements IMessageRepository {
     @Override
     public MessageEntity save(MessageEntity message) {
         return messageRepository.save(message);
+    }
+
+    @Override
+    public Page<IMessageProjection> findByServerIdProjections(Long serverId, Pageable pageable) {
+        return messageRepository.findByServerIdProjections(serverId, pageable);
     }
 
 

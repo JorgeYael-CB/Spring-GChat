@@ -2,7 +2,6 @@ package com.yael.springboot.api.gchat.gchat.application.services;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,10 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.PaginationDto;
-import com.yael.springboot.api.gchat.gchat.application.dtos.messages.MessageDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.messages.MessageWsDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.messages.NewMessageDto;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.Enums.EnumTypeMessage;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IMessageProjection;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IMessageRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IRolesRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IServerRepository;
@@ -77,20 +76,13 @@ public class MessageService {
 
 
     @Transactional(readOnly=true)
-    public ResponseServicePagination<List<MessageDto>> getMessages( PaginationDto pagination, Long serverId ){
+    public ResponseServicePagination<List<IMessageProjection>> getMessages( PaginationDto pagination, Long serverId ){
         if( !serverRepository.findById(serverId).isPresent() ) throw CustomException.notFoundException("Server not found");
         Pageable pageable = PageRequest.of(pagination.getPage(), pagination.getLimit(), Sort.by(Sort.Direction.DESC, "id"));
 
-        Page<MessageEntity> messages = messageRepository.findByServerId(serverId, pageable);
-        List<MessageDto> messageDtos = messages.stream().map( m -> messageMapper.messageEntityToMessageDto(m)).collect(Collectors.toList());
+        Page<IMessageProjection> messages = messageRepository.findByServerIdProjections(serverId, pageable);
 
-        ResponseServicePagination<List<MessageDto>> response = new ResponseServicePagination<>();
-        response.setStatus(200);
-        response.setData(messageDtos);
-        response.setCurrentPage(pagination.getPage());
-        response.setMaxPage(messages.getTotalPages() - 1);
-
-        return response;
+        return new ResponseServicePagination<>(messages.toList(), pagination.getPage(), messages.getTotalPages() - 1, 200);
     }
 
 

@@ -10,4 +10,5 @@ import com.yael.springboot.api.gchat.gchat.domain.entities.LikeEntity;
 
 public interface JpaLikeRepository extends JpaRepository<LikeEntity, Long> {
     public Collection<LikeEntity> findLikesByImageId( Long imageId );
+    public int deleteByUserIdAndImageId( Long userId, Long iamgeId );
 }
