@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IServerProjection;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IServerRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.JpaServerRepository;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ServerEntity;
@@ -34,5 +35,10 @@ public class ServerRepositoryImpl implements IServerRepository {
     @Override
     public ServerEntity save(ServerEntity server) {
         return jpaServerRepository.save(server);
+    }
+
+    @Override
+    public Optional<IServerProjection> findServerById(Long serverId) {
+        return jpaServerRepository.findServerById(serverId);
     }
 }

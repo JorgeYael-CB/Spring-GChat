@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.server.ServerDto;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IServerProjection;
 import com.yael.springboot.api.gchat.gchat.application.services.ResponseService;
 import com.yael.springboot.api.gchat.gchat.application.services.ServerService;
 
@@ -59,8 +60,8 @@ public class ServerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseService<ServerDto>> getServer( @PathVariable Long id ){
-        ResponseService<ServerDto> response = serverService.getServerDetails(id);
+    public ResponseEntity<ResponseService<IServerProjection>> getServer( @PathVariable Long id ){
+        ResponseService<IServerProjection> response = serverService.getServerDetails(id);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.server.ServerDto;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.Enums.EnumTypeMessage;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IServerProjection;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IServerRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IUserRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IJwtService;
@@ -128,18 +129,13 @@ public class ServerService {
 
 
     @Transactional(readOnly=true)
-    public ResponseService<ServerDto> getServerDetails( Long serverId ){
-        Optional<ServerEntity> server = serverRepository.findById(serverId);
-        if( !server.isPresent() ) throw CustomException.notFoundException("Server not found");
+    public ResponseService<IServerProjection> getServerDetails( Long serverId ){
+        IServerProjection server = serverRepository.findServerById(serverId)
+            .orElseThrow( () -> CustomException.notFoundException("Server not found"));
 
-        ServerEntity serverDb = server.get();
-        ResponseService<ServerDto> response = new ResponseService<>();
-        response.setData(serverMapper.serverEntityToServerDto(serverDb));
-        response.setStatus(200);
-        response.setDate(new Date());
-        response.setToken("TOKEN");
+        String token = jwtService.createToken(getUserByAuth.getUsernameLogged());
 
-        return response;
+        return new ResponseService<>(new Date(), server, 200, token);
     }
 
 
@@ -166,6 +162,7 @@ public class ServerService {
         response.setDate(new Date());
         response.setStatus(201);
         response.setToken(token);
+
 
         return response;
     }
