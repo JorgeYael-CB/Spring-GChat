@@ -7,30 +7,30 @@ import java.util.Date;
 
 public class ResponseServicePagination<T> extends ResponseService<T> {
 
-    private int currentPage;
-    private int maxPage;
+    private Long allElements;
+    private int allPages;
 
 
-    public ResponseServicePagination( T data, int currentPage, int maxPage, int status ){
+    public ResponseServicePagination( T data, Long allElements, int allPages, int status ){
         super(new Date(), data, status);
-        this.maxPage = maxPage;
-        this.currentPage = currentPage;
+        this.allPages = allPages;
+        this.allElements = allElements;
     }
 
     public ResponseServicePagination(){}
 
 
-    public int getCurrentPage() {
-        return currentPage;
+    public Long getallElements() {
+        return allElements;
     }
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
+    public void setallElements(Long allElements) {
+        this.allElements = allElements;
     }
-    public int getMaxPage() {
-        return maxPage;
+    public int getAllPages() {
+        return allPages;
     }
-    public void setMaxPage(int maxPage) {
-        this.maxPage = maxPage;
+    public void setAllPages(int allPages) {
+        this.allPages = allPages;
     }
 
 }

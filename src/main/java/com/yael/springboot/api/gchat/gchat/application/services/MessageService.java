@@ -82,7 +82,7 @@ public class MessageService {
 
         Page<IMessageProjection> messages = messageRepository.findByServerIdProjections(serverId, pageable);
 
-        return new ResponseServicePagination<>(messages.toList(), pagination.getPage(), messages.getTotalPages() - 1, 200);
+        return new ResponseServicePagination<>(messages.toList(), messages.getTotalElements(), messages.getTotalPages() - 1, 200);
     }
 
 
