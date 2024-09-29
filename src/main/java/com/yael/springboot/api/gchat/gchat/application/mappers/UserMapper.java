@@ -17,18 +17,12 @@ public class UserMapper {
     public UserDto userEntityToUserDto(UserEntity user) {
         UserDto userDto = new UserDto();
 
-        // Mapear imágenes
-        List<PhotoPreviewDto> photoPreviewDtos = mapImages(user.getImages());
-
-        // Mapear imagen de perfil
-        PhotoPreviewDto profileImage = mapProfileImage(user.getProfileImage());
-
         // Setear propiedades básicas
         setBasicProperties(userDto, user);
 
         // Mapear imágenes y servidores
-        userDto.setImages(photoPreviewDtos);
-        userDto.setProfileImage(profileImage);
+        userDto.setImages(user.getImages());
+        userDto.setProfileImage(user.getProfileImage());
         userDto.setServers(mapServers(user.getServers()));
 
         // Mapear roles

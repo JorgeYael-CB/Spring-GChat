@@ -54,6 +54,16 @@ public class UserRepositoryImpl implements IUserRepository {
         return jpaUserRepository.findUserById(id);
     }
 
+    @Override
+    public Optional<IUserAuthProjection> findUserByEmailOrId(String email, Long id) {
+        return jpaUserRepository.findUserByEmailOrId(email, id);
+    }
+
+    @Override
+    public Optional<IUserAuthProjection> findUserByEmailOrName(String email, String name) {
+        return jpaUserRepository.findUserByEmailOrName(email, name);
+    }
+
 
 
 }

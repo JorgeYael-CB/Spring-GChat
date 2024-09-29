@@ -17,6 +17,8 @@ public interface IUserRepository {
     UserEntity save( UserEntity user );
     Optional<UserEntity> findByEmail(String email);
     Optional<IUserAuthProjection> findUserById(Long id);
+    Optional<IUserAuthProjection> findUserByEmailOrName(String email, String name);
+    Optional<IUserAuthProjection> findUserByEmailOrId(String email, Long id);
 
 
 }

@@ -45,17 +45,16 @@ public class AuthController {
     }
 
     @GetMapping("/get-user")
-    public ResponseEntity<ResponseService<UserDto>> postMethodName(
+    public ResponseEntity<ResponseService<IUserAuthProjection>> postMethodName(
         @Param("email") String email,
         @Param("id") Long id
     ) {
-
-        ResponseService<UserDto> response = authService.getUser(id, email);
+        var response = authService.getUser(id, email);
         return ResponseEntity.status(200).body(response);
     }
 
     @GetMapping("/validate-token")
-    public ResponseEntity<ResponseService<UserDto>> validateToken(){
+    public ResponseEntity<ResponseService<IUserAuthProjection>> validateToken(){
         var response = authService.getUserByToken();
         return ResponseEntity.status(response.getStatus()).body(response);
     }

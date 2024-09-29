@@ -3,8 +3,8 @@ package com.yael.springboot.api.gchat.gchat.application.dtos.auth;
 import java.util.List;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.BaseDto;
-import com.yael.springboot.api.gchat.gchat.application.dtos.photos.PhotoPreviewDto;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ActivityEntity;
+import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
 
 
 
@@ -15,8 +15,8 @@ public class UserDto extends BaseDto {
     private int age;
     private String country;
     private List<String> roles;
-    private PhotoPreviewDto profileImage;
-    private List<PhotoPreviewDto> images;
+    private PhotoEntity profileImage;
+    private List<PhotoEntity> images;
     private List<ActivityEntity> activities;
     private List<UserServerDto> servers;
 
@@ -57,16 +57,16 @@ public class UserDto extends BaseDto {
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
-    public PhotoPreviewDto getProfileImage() {
+    public PhotoEntity getProfileImage() {
         return profileImage;
     }
-    public void setProfileImage(PhotoPreviewDto profileImage) {
+    public void setProfileImage(PhotoEntity profileImage) {
         this.profileImage = profileImage;
     }
-    public List<PhotoPreviewDto> getImages() {
+    public List<PhotoEntity> getImages() {
         return images;
     }
-    public void setImages(List<PhotoPreviewDto> images) {
+    public void setImages(List<PhotoEntity> images) {
         this.images = images;
     }
     public List<ActivityEntity> getActivities() {

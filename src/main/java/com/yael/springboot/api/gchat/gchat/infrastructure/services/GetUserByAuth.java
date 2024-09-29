@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IUserAuthProjection;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IUserRepository;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 import com.yael.springboot.api.gchat.gchat.domain.exceptions.CustomException;
@@ -25,6 +26,14 @@ public class GetUserByAuth {
 
         return userRepository.findByEmail(principal)
             .orElseThrow( () -> CustomException.notFoundException("user not found"));
+    }
+
+    @Transactional(readOnly=true)
+    public IUserAuthProjection getUserProjection(){
+        final String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return userRepository.findUserByEmailOrName(principal, null)
+            .orElseThrow( () -> CustomException.notFoundException("User not exists"));
     }
 
     public String getUsernameLogged(){

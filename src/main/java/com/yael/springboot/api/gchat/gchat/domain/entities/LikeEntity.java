@@ -17,6 +17,7 @@ public class LikeEntity extends BaseEntity {
     @ManyToOne(fetch=FetchType.LAZY)
     private UserEntity user;
 
+    // @ManyToOne(fetch=FetchType.LAZY)
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="image_id")
     @JsonIgnore

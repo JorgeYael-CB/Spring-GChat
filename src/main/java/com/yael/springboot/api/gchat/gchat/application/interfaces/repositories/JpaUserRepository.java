@@ -19,4 +19,10 @@ public interface JpaUserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query("SELECT u FROM UserEntity u WHERE u.id = ?1")
     Optional<IUserAuthProjection> findUserById(Long id);
+
+    @Query("SELECT u FROM UserEntity u WHERE u.id = ?2 or u.email = ?1")
+    Optional<IUserAuthProjection> findUserByEmailOrId(String email, Long id);
+
+    @Query("SELECT u FROM UserEntity u WHERE u.email = ?1 or u.name = ?2")
+    Optional<IUserAuthProjection> findUserByEmailOrName(String email, String name);
 }

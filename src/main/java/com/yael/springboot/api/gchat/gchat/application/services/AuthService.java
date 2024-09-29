@@ -129,12 +129,12 @@ public class AuthService {
 
 
     @Transactional(readOnly=true)
-    public ResponseService<UserDto> getUser( Long id, String email ){
-        UserEntity userDb = userRepository.findByEmailOrId(email, id)
+    public ResponseService<IUserAuthProjection> getUser( Long id, String email ){
+        IUserAuthProjection userDb = userRepository.findUserByEmailOrId(email, id)
             .orElseThrow( () -> CustomException.notFoundException("User not exist"));
 
-        ResponseService<UserDto> response = new ResponseService<>();
-        response.setData(userMapper.userEntityToUserDto(userDb));
+        ResponseService<IUserAuthProjection> response = new ResponseService<>();
+        response.setData(userDb);
         response.setStatus(200);
         response.setDate(new Date());
 
@@ -142,11 +142,11 @@ public class AuthService {
     }
 
 
-    public ResponseService<UserDto> getUserByToken(){
-        UserEntity user = getUserByAuth.getUser();
+    public ResponseService<IUserAuthProjection> getUserByToken(){
+        IUserAuthProjection user = getUserByAuth.getUserProjection();
         String token = jwtService.createToken(user.getRoles(), user.getEmail());
 
-        return new ResponseService<>(new Date(), userMapper.userEntityToUserDto(user), 200, token);
+        return new ResponseService<>(new Date(), user, 200, token);
     }
 
 

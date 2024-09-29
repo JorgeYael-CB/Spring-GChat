@@ -30,6 +30,7 @@ public class LikeService {
         PhotoEntity image = imageRepository.findById(imageId)
             .orElseThrow( () -> CustomException.notFoundException("Image not found"));
         UserEntity user = getUserByAuth.getUser();
+
         LikeEntity like = new LikeEntity();
         like.setUser(user);
         like.setImage(image);
