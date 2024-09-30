@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,13 +24,7 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<?> handleCustomException(CustomException ex) {
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("error: ", ex.getMessage());
-        response.put("date", new Date());
-        response.put("status", ex.getStatus());
-
-        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getStatus()));
+        return this.getResponse(ex.getMessage(), ex.getStatus());
     }
 
 
