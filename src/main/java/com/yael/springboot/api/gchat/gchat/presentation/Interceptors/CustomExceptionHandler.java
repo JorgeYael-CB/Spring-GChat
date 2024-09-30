@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,6 +32,12 @@ public class CustomExceptionHandler {
         response.put("status", ex.getStatus());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getStatus()));
+    }
+
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<?> handleDeniedException( AuthorizationDeniedException ex ){
+        return getResponse("Only authorized users can access this action", 401);
     }
 
 

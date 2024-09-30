@@ -9,15 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yael.springboot.api.gchat.gchat.application.dtos.server.ServerDto;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.Enums.EnumTypeMessage;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IServerProjection;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IServerRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IUserRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IJwtService;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IMessageWs;
-import com.yael.springboot.api.gchat.gchat.application.mappers.MessageMapper;
-import com.yael.springboot.api.gchat.gchat.application.mappers.ServerMapper;
+import com.yael.springboot.api.gchat.gchat.application.mappers.AutoMapper;
 import com.yael.springboot.api.gchat.gchat.domain.entities.MessageEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ServerEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
@@ -31,9 +29,7 @@ import com.yael.springboot.api.gchat.gchat.infrastructure.services.GetUserByAuth
 public class ServerService {
 
     @Autowired
-    ServerMapper serverMapper;
-    @Autowired
-    MessageMapper messageMapper;
+    AutoMapper mapper;
     @Autowired
     IServerRepository serverRepository;
     @Autowired
@@ -46,7 +42,7 @@ public class ServerService {
     IJwtService jwtService;
 
 
-    public ResponseService<ServerDto> joinById( Long serverId ){
+    public ResponseService<IServerProjection> joinById( Long serverId ){
         Optional<ServerEntity> server = serverRepository.findById(serverId);
         if( !server.isPresent() ) throw CustomException.notFoundException("Server not found.");
         Optional<UserEntity> user = userRepository.findByEmail(this.getUserByAuth.getUsernameLogged());
@@ -69,15 +65,15 @@ public class ServerService {
         serverDb.getMessages().add(messageEntity);
 
         EnumTypeMessage type = EnumTypeMessage.USER_JOINED_SERVER;
-        messageWsService.sendMessageToClients(messageMapper.messageEntityToMessageWs(messageEntity, type));
+        messageWsService.sendMessageToClients(mapper.messageEntityToMessageWs(messageEntity, type));
 
         userRepository.save(userDB);
         serverRepository.save(serverDb);
 
         String token = this.jwtService.createToken(userDB.getRoles(), userDB.getEmail());
 
-        ResponseService<ServerDto> response = new ResponseService<>();
-        response.setData(serverMapper.serverEntityToServerDto(serverDb));
+        ResponseService<IServerProjection> response = new ResponseService<>();
+        response.setData(mapper.serverEntityToServer(serverDb));
         response.setStatus(200);
         response.setDate(new Date());
         response.setToken(token);
@@ -87,7 +83,7 @@ public class ServerService {
 
 
     @Transactional
-    public ResponseService<ServerDto> joinRandom(){
+    public ResponseService<IServerProjection> joinRandom(){
         UserEntity user = getUserByAuth.getUser();
 
         Pageable limitOne = PageRequest.of(0, 1);
@@ -113,8 +109,8 @@ public class ServerService {
 
         String token = this.jwtService.createToken(user.getRoles(), user.getEmail());
 
-        ResponseService<ServerDto> response = new ResponseService<>();
-        response.setData(serverMapper.serverEntityToServerDto(serverDb));
+        ResponseService<IServerProjection> response = new ResponseService<>();
+        response.setData(mapper.serverEntityToServer(serverDb));
         response.setToken(token);
 
         response.setStatus(status);
@@ -140,7 +136,7 @@ public class ServerService {
 
 
     @Transactional
-    public ResponseService<ServerDto> create(){
+    public ResponseService<IServerProjection> create(){
         Optional<UserEntity> user = userRepository.findByEmail(this.getUserByAuth.getUsernameLogged());
         if( !user.isPresent() ) throw CustomException.notFoundException("Oops! try again later.");
 
@@ -157,8 +153,8 @@ public class ServerService {
 
         String token = this.jwtService.createToken(userDb.getRoles(), userDb.getEmail());
 
-        ResponseService<ServerDto> response = new ResponseService<>();
-        response.setData(serverMapper.serverEntityToServerDto(server));
+        ResponseService<IServerProjection> response = new ResponseService<>();
+        response.setData(mapper.serverEntityToServer(server));
         response.setDate(new Date());
         response.setStatus(201);
         response.setToken(token);

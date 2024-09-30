@@ -1,84 +1,153 @@
 package com.yael.springboot.api.gchat.gchat.application.dtos.auth;
 
+import java.util.Date;
 import java.util.List;
 
-import com.yael.springboot.api.gchat.gchat.application.dtos.BaseDto;
-import com.yael.springboot.api.gchat.gchat.domain.entities.ActivityEntity;
-import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IPhotoPreviewProjection;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IUserAuthProjection;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IServerPreviewProjection;
+import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
 
 
 
-public class UserDto extends BaseDto {
-    private String name;
-    private String email;
-    private String description;
+
+
+public class UserDto implements IUserAuthProjection {
+
+
+    private Date createat;
+    private Date updatedat;
+    private Long id;
+    private List<RoleEntity> roles;
     private int age;
     private String country;
-    private List<String> roles;
-    private PhotoEntity profileImage;
-    private List<PhotoEntity> images;
-    private List<ActivityEntity> activities;
-    private List<UserServerDto> servers;
+    private String city;
+    private String email;
+    private String description;
+    private String name;
+    private List<IPhotoPreviewProjection> images;
+    private IPhotoPreviewProjection profileimage;
+    private List<IServerPreviewProjection> servers;
 
 
-    public String getName() {
-        return name;
+    public UserDto(){}
+
+
+    public void setCreateat(Date createat) {
+        this.createat = createat;
     }
-    public void setName(String name) {
-        this.name = name;
+
+    public void setUpdatedat(Date updatedat) {
+        this.updatedat = updatedat;
     }
-    public String getEmail() {
-        return email;
+
+    public void setId(Long id) {
+        this.id = id;
     }
-    public void setEmail(String email) {
-        this.email = email;
+
+    public void setRoles(List<RoleEntity> roles) {
+        this.roles = roles;
     }
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public int getAge() {
-        return age;
-    }
+
     public void setAge(int age) {
         this.age = age;
     }
-    public String getCountry() {
-        return country;
-    }
+
     public void setCountry(String country) {
         this.country = country;
     }
-    public List<String> getRoles() {
-        return roles;
+
+    public void setCity(String city) {
+        this.city = city;
     }
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+
+    public void setEmail(String email) {
+        this.email = email;
     }
-    public PhotoEntity getProfileImage() {
-        return profileImage;
+
+    public void setDescription(String description) {
+        this.description = description;
     }
-    public void setProfileImage(PhotoEntity profileImage) {
-        this.profileImage = profileImage;
+
+    public void setName(String name) {
+        this.name = name;
     }
-    public List<PhotoEntity> getImages() {
-        return images;
-    }
-    public void setImages(List<PhotoEntity> images) {
+
+    public void setImages(List<IPhotoPreviewProjection> images) {
         this.images = images;
     }
-    public List<ActivityEntity> getActivities() {
-        return activities;
+
+    public void setProfileimage(IPhotoPreviewProjection profileimage) {
+        this.profileimage = profileimage;
     }
-    public void setActivities(List<ActivityEntity> activities) {
-        this.activities = activities;
-    }
-    public List<UserServerDto> getServers() {
-        return servers;
-    }
-    public void setServers(List<UserServerDto> servers) {
+
+    public void setServers(List<IServerPreviewProjection> servers) {
         this.servers = servers;
     }
+
+    @Override
+    public Date getCreateAt() {
+        return createat;
+    }
+
+    @Override
+    public Date getUpdatedAt() {
+        return updatedat;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public List<RoleEntity> getRoles() {
+        return roles;
+    }
+
+    @Override
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public String getCountry() {
+        return country;
+    }
+
+    @Override
+    public String getCity() {
+        return city;
+    }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public List<IPhotoPreviewProjection> getImages() {
+        return images;
+    }
+
+    @Override
+    public IPhotoPreviewProjection getProfileImage() {
+        return profileimage;
+    }
+
+    @Override
+    public List<IServerPreviewProjection> getServers() {
+        return servers;
+    }
+    
 }

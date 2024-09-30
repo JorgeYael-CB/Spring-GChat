@@ -18,6 +18,6 @@ public interface IUserAuthProjection extends IProjectionBase {
     String getName();
     List<IPhotoPreviewProjection> getImages();
     IPhotoPreviewProjection getProfileImage();
-    List<IUserServerProjection> getServers();
+    List<IServerPreviewProjection> getServers();
 
 }

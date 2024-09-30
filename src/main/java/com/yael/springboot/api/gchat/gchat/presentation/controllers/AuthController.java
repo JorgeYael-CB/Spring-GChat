@@ -39,8 +39,8 @@ public class AuthController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<ResponseService<UserDto>> updateUser( @Valid @ModelAttribute UpdateUserDto entity) {
-        ResponseService<UserDto> response = authService.updateUser(entity);
+    public ResponseEntity<ResponseService<IUserAuthProjection>> updateUser( @Valid @ModelAttribute UpdateUserDto entity) {
+        ResponseService<IUserAuthProjection> response = authService.updateUser(entity);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 

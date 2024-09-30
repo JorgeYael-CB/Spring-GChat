@@ -14,14 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.RegisterUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UpdateUserDto;
-import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UserDto;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IUserAuthProjection;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IRolesRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IUserRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IFilesService;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IJwtService;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IValidateClassService;
-import com.yael.springboot.api.gchat.gchat.application.mappers.UserMapper;
+import com.yael.springboot.api.gchat.gchat.application.mappers.AutoMapper;
 import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
@@ -40,7 +39,7 @@ public class AuthService {
     @Autowired
     IRolesRepository rolesRepository;
     @Autowired
-    UserMapper userMapper;
+    AutoMapper mapper;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
@@ -79,7 +78,7 @@ public class AuthService {
 
 
     @Transactional
-    public ResponseService<UserDto> updateUser( UpdateUserDto user ){
+    public ResponseService<IUserAuthProjection> updateUser( UpdateUserDto user ){
         Boolean isAllMethodsEmpty = validateClassService.fieldsEmptyClass(UpdateUserDto.class, user);
         if( isAllMethodsEmpty ) throw CustomException.badRequestException("Missing fields to updated");
 
@@ -117,12 +116,12 @@ public class AuthService {
 
         String token = this.jwtService.createToken(userDb.getRoles(), userDb.getEmail());
 
-        ResponseService<UserDto> response = new ResponseService<>();
-        response.setData(userMapper.userEntityToUserDto(userDb));
-        response.setStatus(200);
-        response.setToken(token);
-
-        return response;
+        return new ResponseService<>(
+            new Date(),
+            mapper.userEntityToUserAuth(userDb),
+            201,
+            token
+        );
     }
 
 

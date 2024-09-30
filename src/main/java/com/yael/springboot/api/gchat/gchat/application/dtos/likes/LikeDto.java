@@ -1,28 +1,21 @@
-package com.yael.springboot.api.gchat.gchat.application.dtos.messages;
+package com.yael.springboot.api.gchat.gchat.application.dtos.likes;
 
 import java.util.Date;
 
-import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IMessageProjection;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.ILikeProjection;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IUserPreviewProjection;
 
 
 
-
-
-
-public class MessageDto implements IMessageProjection {
-
+public class LikeDto implements ILikeProjection {
 
     private Date createat;
     private Date updatedat;
     private Long id;
-    private String content;
-    private Boolean edited;
-    private Boolean serverMessage;
     private IUserPreviewProjection user;
 
 
-    public MessageDto(){}
+    public LikeDto(){}
 
 
     public void setCreateat(Date createat) {
@@ -35,18 +28,6 @@ public class MessageDto implements IMessageProjection {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setEdited(Boolean edited) {
-        this.edited = edited;
-    }
-
-    public void setServerMessage(Boolean serverMessage) {
-        this.serverMessage = serverMessage;
     }
 
     public void setUser(IUserPreviewProjection user) {
@@ -69,23 +50,10 @@ public class MessageDto implements IMessageProjection {
     }
 
     @Override
-    public String getContent() {
-        return content;
-    }
-
-    @Override
-    public Boolean getEdited() {
-        return edited;
-    }
-
-    @Override
-    public Boolean getServerMessage() {
-        return serverMessage;
-    }
-
-    @Override
     public IUserPreviewProjection getUser() {
         return user;
     }
+
+
 
 }

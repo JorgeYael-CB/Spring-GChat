@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yael.springboot.api.gchat.gchat.application.dtos.server.ServerDto;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IServerProjection;
 import com.yael.springboot.api.gchat.gchat.application.services.ResponseService;
 import com.yael.springboot.api.gchat.gchat.application.services.ServerService;
@@ -29,33 +28,33 @@ public class ServerController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
-    public ResponseEntity<?> create(){
-        ResponseService<ServerDto> response = serverService.create();
+    public ResponseEntity<ResponseService<IServerProjection>> create(){
+        ResponseService<IServerProjection> response = serverService.create();
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseService<ServerDto>> delete( @PathVariable Long id ){
+    public ResponseEntity<ResponseService<IServerProjection>> delete( @PathVariable Long id ){
         return null;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseService<ServerDto>> update( @PathVariable Long id ){
+    public ResponseEntity<ResponseService<IServerProjection>> update( @PathVariable Long id ){
         return null;
     }
 
 
     @GetMapping("/join-random")
-    public ResponseEntity<ResponseService<ServerDto>> joinRandom(){
-        ResponseService<ServerDto> response = serverService.joinRandom();
+    public ResponseEntity<ResponseService<IServerProjection>> joinRandom(){
+        ResponseService<IServerProjection> response = serverService.joinRandom();
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @GetMapping("/join/{id}")
     public ResponseEntity<?> joinById( @PathVariable Long id ){
-        ResponseService<ServerDto> response = serverService.joinById(id);
+        ResponseService<IServerProjection> response = serverService.joinById(id);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
@@ -66,7 +65,7 @@ public class ServerController {
     }
 
     @DeleteMapping("/leave/{id}")
-    public ResponseEntity<ResponseService<ServerDto>> deleteServer( @PathVariable Long id ){
+    public ResponseEntity<ResponseService<IServerProjection>> deleteServer( @PathVariable Long id ){
         return null;
     }
 

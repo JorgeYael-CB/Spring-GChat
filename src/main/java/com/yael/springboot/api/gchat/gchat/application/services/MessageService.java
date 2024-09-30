@@ -20,7 +20,7 @@ import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.I
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IRolesRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IServerRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IMessageWs;
-import com.yael.springboot.api.gchat.gchat.application.mappers.MessageMapper;
+import com.yael.springboot.api.gchat.gchat.application.mappers.AutoMapper;
 import com.yael.springboot.api.gchat.gchat.domain.entities.MessageEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
 import com.yael.springboot.api.gchat.gchat.domain.entities.ServerEntity;
@@ -41,7 +41,7 @@ public class MessageService {
     @Autowired
     GetUserByAuth getUserByAuth;
     @Autowired
-    MessageMapper messageMapper;
+    AutoMapper mapper;
     @Autowired
     IMessageWs messageWs;
     @Autowired
@@ -68,7 +68,7 @@ public class MessageService {
 
         // Notificar a los usuarios.
         EnumTypeMessage type = EnumTypeMessage.NEW_MESSAGE;
-        MessageWsDto msg = messageMapper.messageEntityToMessageWs(message, type);
+        MessageWsDto msg = mapper.messageEntityToMessageWs(message, type);
         messageWs.sendMessageToClients(msg);
 
         return new ResponseService<>(new Date(), true, 201);
@@ -99,7 +99,7 @@ public class MessageService {
 
         // Notificacion a los usuarios del mensaje actualizado.
         EnumTypeMessage type = EnumTypeMessage.UPDATE_MESSAGE;
-        MessageWsDto msg = messageMapper.messageEntityToMessageWs(messageDb, type);
+        MessageWsDto msg = mapper.messageEntityToMessageWs(messageDb, type);
         messageWs.sendMessageToClients(msg);
 
         return new ResponseService<>(new Date(), true, 200);
@@ -120,7 +120,7 @@ public class MessageService {
         message.setIsActive(false);
 
         EnumTypeMessage type = EnumTypeMessage.DELETE_MESSAGE;
-        MessageWsDto msg = messageMapper.messageEntityToMessageWs(message, type);
+        MessageWsDto msg = mapper.messageEntityToMessageWs(message, type);
         messageWs.sendMessageToClients(msg);
 
         return new ResponseService<>(new Date(), true, 200);
