@@ -23,10 +23,6 @@ public class CustomException extends RuntimeException {
         return new CustomException(404, error);
     }
 
-    public static CustomException unaothorizedException( String error ){
-        return new CustomException(401, error);
-    }
-
     public static CustomException internalServerException( String error ){
         // TODO: logger
         System.out.println(error);

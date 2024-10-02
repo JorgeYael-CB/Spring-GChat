@@ -73,13 +73,13 @@ public class JwtAuthToken extends UsernamePasswordAuthenticationFilter {
         Map<String, Object> res = new HashMap<>();
         res.put("err", "Password or email is not valid");
         res.put("date", new Date());
-        res.put("status", 401);
+        res.put("status", 400);
 
         System.out.println(failed.getMessage());
 
         response.getWriter()
             .write( new ObjectMapper().writeValueAsString(res) );
-        response.setStatus(401);
+        response.setStatus(400);
         response.setContentType(CONTENT_TYPE);
     }
 

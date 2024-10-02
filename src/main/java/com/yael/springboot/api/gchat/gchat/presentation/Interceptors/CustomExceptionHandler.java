@@ -30,7 +30,7 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<?> handleDeniedException( AuthorizationDeniedException ex ){
-        return getResponse("Only authorized users can access this action", 401);
+        return getResponse("Only authorized users can access this action", 400);
     }
 
 

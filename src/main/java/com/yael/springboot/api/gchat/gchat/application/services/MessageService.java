@@ -56,7 +56,7 @@ public class MessageService {
         UserEntity user = getUserByAuth.getUser();
 
         if (!serverDb.getUsers().contains(user)) {
-            throw CustomException.unaothorizedException("You cannot send messages to this server.");
+            throw CustomException.badRequestException("You cannot send messages to this server.");
         }
 
         MessageEntity message = new MessageEntity();
@@ -93,7 +93,7 @@ public class MessageService {
 
         UserEntity user = getUserByAuth.getUser();
 
-        if( !messageDb.getUser().getId().equals(user.getId()) ) throw CustomException.unaothorizedException("Only the person who sent the message can update it");
+        if( !messageDb.getUser().getId().equals(user.getId()) ) throw CustomException.badRequestException("Only the person who sent the message can update it");
         messageDb.setContent(messageDto.getContent());
         messageDb.setIsEdited(true);
 
@@ -114,7 +114,7 @@ public class MessageService {
         RoleEntity roleAdmin = rolesRepository.findByRole("ROLE_ADMIN").get();
 
         if( !user.getRoles().contains(roleAdmin) && !message.getUser().getId().equals(user.getId()) ){
-            throw CustomException.unaothorizedException("only the creator can delete the message.");
+            throw CustomException.badRequestException("only the creator can delete the message.");
         }
 
         message.setIsActive(false);
