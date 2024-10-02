@@ -15,10 +15,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.CONTENT_TYPE;
-import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.HEADER_AUTHORIZATION;
-import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.PREFIX_TOKEN;
-import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.SECRET_KEY;
+import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.getContentType;
+import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.getHeaderAuthorization;
+import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.getPrefixToken;
+import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.getSecretKey;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -44,17 +44,17 @@ public class JwtAuthValidationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String header = request.getHeader(HEADER_AUTHORIZATION);
+        String header = request.getHeader(getHeaderAuthorization());
 
-        if( header == null || !header.startsWith(PREFIX_TOKEN) ){
+        if( header == null || !header.startsWith(getPrefixToken()) ){
             chain.doFilter(request, response);
             return;
         }
 
-        String token = header.replace(PREFIX_TOKEN, "");
+        String token = header.replace(getPrefixToken(), "");
 
         try{
-            Claims claims = Jwts.parser().verifyWith(SECRET_KEY)
+            Claims claims = Jwts.parser().verifyWith(getSecretKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
@@ -97,7 +97,7 @@ public class JwtAuthValidationFilter extends BasicAuthenticationFilter {
                 new ObjectMapper().writeValueAsString(body)
             );
             response.setStatus(401);
-            response.setContentType(CONTENT_TYPE);
+            response.setContentType(getContentType());
         }
     }
 

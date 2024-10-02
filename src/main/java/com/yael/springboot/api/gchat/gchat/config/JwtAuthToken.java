@@ -19,9 +19,9 @@ import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IJwtService;
 import com.yael.springboot.api.gchat.gchat.application.services.ResponseService;
-import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.CONTENT_TYPE;
-import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.HEADER_AUTHORIZATION;
-import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.PREFIX_TOKEN;
+import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.getContentType;
+import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.getHeaderAuthorization;
+import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.getPrefixToken;
 import com.yael.springboot.api.gchat.gchat.domain.entities.UserEntity;
 
 import jakarta.servlet.FilterChain;
@@ -80,7 +80,7 @@ public class JwtAuthToken extends UsernamePasswordAuthenticationFilter {
         response.getWriter()
             .write( new ObjectMapper().writeValueAsString(res) );
         response.setStatus(400);
-        response.setContentType(CONTENT_TYPE);
+        response.setContentType(getContentType());
     }
 
 
@@ -98,8 +98,8 @@ public class JwtAuthToken extends UsernamePasswordAuthenticationFilter {
         res.setStatus(200);
 
         response.setStatus(200);
-        response.setContentType(CONTENT_TYPE);
-        response.addHeader(HEADER_AUTHORIZATION, PREFIX_TOKEN + token);
+        response.setContentType(getContentType());
+        response.addHeader(getHeaderAuthorization(), getPrefixToken() + token);
         response.getWriter()
             .write( new ObjectMapper().writeValueAsString(res) );
     }

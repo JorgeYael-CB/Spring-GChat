@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IJwtService;
-import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.DATE_EXPIRE;
-import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.SECRET_KEY;
+import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.getDateExpire;
+import static com.yael.springboot.api.gchat.gchat.config.JwtEnvs.getSecretKey;
 import com.yael.springboot.api.gchat.gchat.domain.entities.RoleEntity;
 import com.yael.springboot.api.gchat.gchat.domain.exceptions.CustomException;
 
@@ -34,8 +34,8 @@ public class JwtServiceImpl implements IJwtService {
             String token = Jwts.builder()
                 .subject(username)
                 .claims(claims)
-                .expiration( DATE_EXPIRE )
-                .signWith( SECRET_KEY )
+                .expiration( getDateExpire() )
+                .signWith( getSecretKey() )
                 .compact();
 
             return token;
@@ -57,8 +57,8 @@ public class JwtServiceImpl implements IJwtService {
         try {
             String token = Jwts.builder()
                 .subject(username)
-                .expiration( DATE_EXPIRE )
-                .signWith( SECRET_KEY )
+                .expiration( getDateExpire() )
+                .signWith( getSecretKey() )
                 .compact();
 
             return token;
