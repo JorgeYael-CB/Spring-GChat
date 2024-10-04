@@ -12,7 +12,6 @@ public abstract class JwtEnvs {
     private static final SecretKey SECRET_KEY = Jwts.SIG.HS256.key().build();
     private static final String PREFIX_TOKEN = "Bearer ";
     private static final String HEADER_AUTHORIZATION = "Authorization";
-    private static final Date DATE_EXPIRE = new Date(System.currentTimeMillis() + 3600000);
     private static final String CONTENT_TYPE = "application/json";
 
 
@@ -26,7 +25,7 @@ public abstract class JwtEnvs {
         return HEADER_AUTHORIZATION;
     }
     public static Date getDateExpire() {
-        return DATE_EXPIRE;
+        return new Date(System.currentTimeMillis() + 3600000);
     }
     public static String getContentType() {
         return CONTENT_TYPE;
