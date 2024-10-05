@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.RegisterUserDto;
+import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UpdatePasswordOrEmailDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UpdateUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.VerifyAccountDto;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IUserAuthProjection;
@@ -142,7 +143,7 @@ public class AuthService {
         String email = verifyAccountDto.getEmail();
         userRepository.findUserByEmailOrName(email, null)
             .orElseThrow( () -> CustomException.badRequestException("User not exists"));
-        String code = codeAuth.getCodeGenerator(6);
+        String code = codeAuth.getCodeGenerator(6, email);
 
         // Mandar un email para validar su cuenta y mandarle al front un codigo de verificacion de 1 solo uso.
         StringBuilder html = new StringBuilder();
@@ -158,7 +159,27 @@ public class AuthService {
         return new ResponseService<>(new Date(), code, 200);
     }
 
+    public ResponseService<Boolean> verifyCodeAuth( String code ){
+        this.codeAuth.validateCodeUsername(code);
 
+        return new ResponseService<>(new Date(), true, 200);
+    }
+
+
+    @Transactional
+    public ResponseService<IUserAuthProjection> updateEmailOrPassword( UpdatePasswordOrEmailDto update ){
+        String email = this.codeAuth.getUsernameByCode(update.getCode());
+        UserEntity user = userRepository.findByEmail(email)
+            .orElseThrow( () -> CustomException.badRequestException("User not exist"));
+
+        if( update.getEmail() != null ) user.setEmail(update.getEmail());
+        if( update.getPassword() != null ){
+            var passwordHash = this.passwordEncoder.encode(update.getPassword());
+            user.setPassword(passwordHash);
+        }
+
+        return new ResponseService<>(new Date(), mapper.userEntityToUserAuth(user), 200);
+    }
 
     @Transactional
     public ResponseService<Boolean> deleteAccount(){

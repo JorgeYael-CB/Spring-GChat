@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.RegisterUserDto;
+import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UpdatePasswordOrEmailDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UpdateUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.VerifyAccountDto;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IUserAuthProjection;
@@ -61,14 +63,21 @@ public class AuthController {
     }
 
     @PostMapping("/verify-account")
-    public ResponseEntity<ResponseService<String>> verifyAccount( @RequestBody VerifyAccountDto verifyAccountDto ){
+    public ResponseEntity<ResponseService<String>> verifyAccount( @Valid @RequestBody VerifyAccountDto verifyAccountDto ){
         var res = this.authService.verifyAccount(verifyAccountDto);
         return ResponseEntity.status(res.getStatus()).body(res);
     }
 
+    @GetMapping("/verify-code-auth/{code}")
+    public ResponseEntity<ResponseService<Boolean>> verifyCodeAuth( @PathVariable String code ){
+        var res = this.authService.verifyCodeAuth(code);
+        return ResponseEntity.status(res.getStatus()).body(res);
+    }
+
     @PutMapping("/update-password-email")
-    public ResponseEntity<ResponseService<IUserAuthProjection>> updatePasswordOrEmail(@RequestBody String password) {
-        return null;
+    public ResponseEntity<ResponseService<IUserAuthProjection>> updatePasswordOrEmail(@Valid @RequestBody UpdatePasswordOrEmailDto update) {
+        var res = authService.updateEmailOrPassword(update);
+        return ResponseEntity.status(res.getStatus()).body(res);
     }
 
     @DeleteMapping
