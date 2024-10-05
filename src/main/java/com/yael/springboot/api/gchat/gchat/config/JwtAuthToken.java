@@ -55,6 +55,9 @@ public class JwtAuthToken extends UsernamePasswordAuthenticationFilter {
 
             password = user.getPassword();
             email = user.getEmail();
+
+            System.out.println(password);
+            System.out.println(email);
         } catch (StreamReadException e) {
             e.printStackTrace();
         } catch (DatabindException e) {
@@ -74,8 +77,6 @@ public class JwtAuthToken extends UsernamePasswordAuthenticationFilter {
         res.put("err", "Password or email is not valid");
         res.put("date", new Date());
         res.put("status", 400);
-
-        System.out.println(failed.getMessage());
 
         response.getWriter()
             .write( new ObjectMapper().writeValueAsString(res) );

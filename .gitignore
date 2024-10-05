@@ -6,6 +6,7 @@ target/
 
 configdb.properties
 images
+email.properties
 
 ### STS ###
 .apt_generated

@@ -61,6 +61,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/auth/get-user/**").permitAll() // ruta permitda
                 .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll() // ruta permitda
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll() // ruta permitida
+                .requestMatchers(HttpMethod.POST, "/api/auth/verify-account").permitAll() // ruta permitida
                 .anyRequest().authenticated() // rutas bloqueadas
             )
             .addFilter( new JwtAuthToken(authenticationManager(), jwtService) ) // primer filtro (validar datos del usuario)

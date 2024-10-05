@@ -1,11 +1,8 @@
 package com.yael.springboot.api.gchat.gchat.application.services;
 
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,11 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.RegisterUserDto;
 import com.yael.springboot.api.gchat.gchat.application.dtos.auth.UpdateUserDto;
+import com.yael.springboot.api.gchat.gchat.application.dtos.auth.VerifyAccountDto;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.projections.IUserAuthProjection;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IRolesRepository;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.repositories.IUserRepository;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.services.ICodeAuthGenerator;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IFilesService;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IJwtService;
+import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IMailerService;
 import com.yael.springboot.api.gchat.gchat.application.interfaces.services.IValidateClassService;
 import com.yael.springboot.api.gchat.gchat.application.mappers.AutoMapper;
 import com.yael.springboot.api.gchat.gchat.domain.entities.PhotoEntity;
@@ -50,6 +50,10 @@ public class AuthService {
     IJwtService jwtService;
     @Autowired
     IValidateClassService validateClassService;
+    @Autowired
+    IMailerService mailerService;
+    @Autowired
+    ICodeAuthGenerator codeAuth;
 
 
     @Transactional
@@ -89,20 +93,7 @@ public class AuthService {
         if (user.getCountry() != null) userDb.setCountry(user.getCountry());
         if (user.getDescription() != null) userDb.setDescription(user.getDescription());
         if (user.getName() != null) userDb.setName(user.getName());
-        if( user.getImages() != null && !user.getImages().isEmpty() ){
-            List<PhotoEntity> images = new ArrayList<>();
-
-            user.getImages().forEach(img -> {
-                String imgUrl = filesService.saveImage(img, "images/");
-
-                PhotoEntity photoEntity = new PhotoEntity();
-                photoEntity.setImage(imgUrl);
-                images.add(photoEntity);
-            });
-
-            Stream.concat(images.stream(), userDb.getImages().stream());
-            userDb.setImages(images);
-        }
+        if (user.getCity() != null) userDb.setCity(user.getCity());
 
         if( user.getProfileImage() != null ){
             if( userDb.getProfileImage() != null ) filesService.deleteImage(userDb.getProfileImage().getImage(), "images/");
@@ -145,6 +136,28 @@ public class AuthService {
 
         return new ResponseService<>(new Date(), user, 200, token);
     }
+
+    @Transactional(readOnly = true)
+    public ResponseService<String> verifyAccount( VerifyAccountDto verifyAccountDto ){
+        String email = verifyAccountDto.getEmail();
+        userRepository.findUserByEmailOrName(email, null)
+            .orElseThrow( () -> CustomException.badRequestException("User not exists"));
+        String code = codeAuth.getCodeGenerator(6);
+
+        // Mandar un email para validar su cuenta y mandarle al front un codigo de verificacion de 1 solo uso.
+        StringBuilder html = new StringBuilder();
+        html.append("<h1>Verifica tu correo electronico en GCHat<h1/>\n");
+        html.append("Se ha solicitado el codigo desde: https://www.gchat.com\n");
+        html.append("Tu codigo de verificacion de 1 solo uso es: ");
+        html.append(code);
+        html.append("<h3>Si tu no solicitaste este codigo, puedes ignorar este mensaje<h3/>");
+        html.append("Muchas gracias por tus preferencias, att: GChat");
+
+        this.mailerService.sendEmail(email, html.toString());
+
+        return new ResponseService<>(new Date(), code, 200);
+    }
+
 
 
     @Transactional

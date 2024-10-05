@@ -19,8 +19,6 @@ public class UpdateUserDto {
     private String name;
 
     private MultipartFile profileImage;
-    private List<MultipartFile> images;
-
     @Size(min=8, max=250)
     private String description;
 
@@ -30,6 +28,9 @@ public class UpdateUserDto {
 
     @Size(min=2, max=4)
     private String country;
+
+    @Size(min=2, max=50)
+    private String city;
 
     private List<Integer> activities;
 
@@ -58,14 +59,6 @@ public class UpdateUserDto {
 
     public void setProfileImage(MultipartFile profileImage) {
         this.profileImage = profileImage;
-    }
-
-    public List<MultipartFile> getImages() {
-        return images;
-    }
-
-    public void setImages(List<MultipartFile> images) {
-        this.images = images;
     }
 
     public String getDescription() {
@@ -107,13 +100,20 @@ public class UpdateUserDto {
         sb.append("userId=").append(userId);
         sb.append(", name=").append(name);
         sb.append(", profileImage=").append(profileImage);
-        sb.append(", images=").append(images);
         sb.append(", description=").append(description);
         sb.append(", age=").append(age);
         sb.append(", country=").append(country);
         sb.append(", activities=").append(activities);
         sb.append('}');
         return sb.toString();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
 }
